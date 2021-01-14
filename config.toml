@@ -1,4 +1,4 @@
-baseURL = "http://oddcc.github.io/"
+baseURL = "http://blog.chenhq.ren/"
 languageCode = "en-us"
 theme = "maupassant"
 title = "CodeTalk"
