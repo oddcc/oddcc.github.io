@@ -2,26 +2,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Java on CodeTalk</title>
-    <link>http://oddcc.github.io/categories/Java/</link>
+    <link>http://blog.chenhq.ren/categories/Java/</link>
     <description>Recent content in Java on CodeTalk</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 30 Nov 2020 08:18:02 +0000</lastBuildDate><atom:link href="http://oddcc.github.io/categories/Java/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 30 Nov 2020 08:18:02 +0000</lastBuildDate><atom:link href="http://blog.chenhq.ren/categories/Java/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>接触了一些新语言后，回头看Java 8之后的更新</title>
-      <link>http://oddcc.github.io/2020/11/%E6%8E%A5%E8%A7%A6%E4%BA%86%E4%B8%80%E4%BA%9B%E6%96%B0%E8%AF%AD%E8%A8%80%E5%90%8E%EF%BC%8C%E5%9B%9E%E5%A4%B4%E7%9C%8Bjava-8%E4%B9%8B%E5%90%8E%E7%9A%84%E6%9B%B4%E6%96%B0/</link>
+      <link>http://blog.chenhq.ren/2020/11/%E6%8E%A5%E8%A7%A6%E4%BA%86%E4%B8%80%E4%BA%9B%E6%96%B0%E8%AF%AD%E8%A8%80%E5%90%8E%EF%BC%8C%E5%9B%9E%E5%A4%B4%E7%9C%8Bjava-8%E4%B9%8B%E5%90%8E%E7%9A%84%E6%9B%B4%E6%96%B0/</link>
       <pubDate>Mon, 30 Nov 2020 08:18:02 +0000</pubDate>
       
-      <guid>http://oddcc.github.io/2020/11/%E6%8E%A5%E8%A7%A6%E4%BA%86%E4%B8%80%E4%BA%9B%E6%96%B0%E8%AF%AD%E8%A8%80%E5%90%8E%EF%BC%8C%E5%9B%9E%E5%A4%B4%E7%9C%8Bjava-8%E4%B9%8B%E5%90%8E%E7%9A%84%E6%9B%B4%E6%96%B0/</guid>
+      <guid>http://blog.chenhq.ren/2020/11/%E6%8E%A5%E8%A7%A6%E4%BA%86%E4%B8%80%E4%BA%9B%E6%96%B0%E8%AF%AD%E8%A8%80%E5%90%8E%EF%BC%8C%E5%9B%9E%E5%A4%B4%E7%9C%8Bjava-8%E4%B9%8B%E5%90%8E%E7%9A%84%E6%9B%B4%E6%96%B0/</guid>
       <description>&lt;p&gt;Java一直被认为是一门啰嗦的语言，有个段子是调侃一个小项目，用Java写就会变成大项目。但Java同时也使用广泛，工程性强，写Java的人也是最多。对Java的这些特点，在没写过太多其他语言之前，我的认识很肤浅，有点人云亦云的感觉。在最近因为工作原因写了大量go、Javascript、TypeScript代码之后，再回头来看Java，居然没有像常见到的那些写了go就不想碰Java的观点一样感到轻松，而是十分怀念…&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Java 对象在内存中是如何表示的</title>
-      <link>http://oddcc.github.io/2020/07/java-%E5%AF%B9%E8%B1%A1%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E6%98%AF%E5%A6%82%E4%BD%95%E8%A1%A8%E7%A4%BA%E7%9A%84/</link>
+      <link>http://blog.chenhq.ren/2020/07/java-%E5%AF%B9%E8%B1%A1%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E6%98%AF%E5%A6%82%E4%BD%95%E8%A1%A8%E7%A4%BA%E7%9A%84/</link>
       <pubDate>Mon, 20 Jul 2020 08:07:42 +0000</pubDate>
       
-      <guid>http://oddcc.github.io/2020/07/java-%E5%AF%B9%E8%B1%A1%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E6%98%AF%E5%A6%82%E4%BD%95%E8%A1%A8%E7%A4%BA%E7%9A%84/</guid>
+      <guid>http://blog.chenhq.ren/2020/07/java-%E5%AF%B9%E8%B1%A1%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E6%98%AF%E5%A6%82%E4%BD%95%E8%A1%A8%E7%A4%BA%E7%9A%84/</guid>
       <description>&lt;h2 id=&#34;背景知识&#34;&gt;背景知识&lt;/h2&gt;
 &lt;p&gt;JVM 规范中没有限制对象在内存中是怎么表示的，具体的设计方式取决于各 JVM 实现，我们就以最常见的 HotSpot 为例来说明。&lt;/p&gt;
 &lt;p&gt;HotSpot JVM 是用一种叫做 Ordinary Object Pointer（OOP）的数据结构来表示指向对象的指针。在 OOP 中，最重要的是 mark word 和klass word：&lt;/p&gt;
