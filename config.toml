@@ -11,7 +11,7 @@ summaryLength = 140
 name = "oddcc"
 [params]
 author = "oddcc"
-keywords = "golang,go语言,oddcc,java,博客,python,软件架构"
+keywords = "golang,go语言,oddcc,java,博客"
 subtitle = "记录，思考，分享"
 #   busuanzi = true #启用不算子网页统计
 #   googleAd = ""  #ca-pub-xxxxxxxxxxxxxx
