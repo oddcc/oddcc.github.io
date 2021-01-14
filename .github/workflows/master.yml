@@ -47,6 +47,7 @@ jobs:
           mkdir public
           git worktree prune
           rm -rf .git/worktrees/public/
+          git remote -v
           git worktree add -B gh-pages public upstream/gh-pages
           rm -rf public/*
           hugo
