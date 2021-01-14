@@ -44,10 +44,7 @@ jobs:
               echo "The working directory is dirty. Please commit any pending changes."
               exit 1;
           fi
-          rm -rf public
-          mkdir public
-          git worktree prune
-          rm -rf .git/worktrees/public/
+          git worktree list
           git remote -v
           git worktree add -B gh-pages public origin/gh-pages
           rm -rf public/*
