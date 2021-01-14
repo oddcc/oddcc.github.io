@@ -1,6 +1,7 @@
 
 /hugo
 docs/public*
+/public
 /.idea
 hugo.exe
 *.test
