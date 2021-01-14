@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>AWS on CodeTalk</title>
+    <link>http://oddcc.github.io/categories/AWS/</link>
+    <description>Recent content in AWS on CodeTalk</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 25 Nov 2020 04:00:50 +0000</lastBuildDate><atom:link href="http://oddcc.github.io/categories/AWS/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>记一次被迫参加开源的经历</title>
+      <link>http://oddcc.github.io/2020/11/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%A2%AB%E8%BF%AB%E5%8F%82%E5%8A%A0%E5%BC%80%E6%BA%90%E7%9A%84%E7%BB%8F%E5%8E%86/</link>
+      <pubDate>Wed, 25 Nov 2020 04:00:50 +0000</pubDate>
+      
+      <guid>http://oddcc.github.io/2020/11/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%A2%AB%E8%BF%AB%E5%8F%82%E5%8A%A0%E5%BC%80%E6%BA%90%E7%9A%84%E7%BB%8F%E5%8E%86/</guid>
+      <description>&lt;p&gt;公司的CI目前是在固定的几台机器上跑，有几个问题，一个是没有伸缩性，高峰期时甚至有CI等到过期了都没排到机器；另一个是空闲时又要浪费不小的运营成本，毕竟机器开在那里就扣费的。&lt;/p&gt;
+&lt;p&gt;出于节省公司运营成本的考虑，决定把跑CI的机器由固定配置改成可伸缩的，由于代码管理是在自建的gitlab上面，云服务使用的是AWS，所以调研了几个方案&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;利用AWS Fargate实现（&lt;a href=&#34;https://docs.gitlab.com/runner/configuration/runner_autoscale_aws/&#34;&gt;官方文档&lt;/a&gt;），但Fargate有自己的限制，即不支持Docker-in-Docker，所以只能跑一些简单的CI。我们的发版操作也是用CI跑的，所以官方的方式不行。&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

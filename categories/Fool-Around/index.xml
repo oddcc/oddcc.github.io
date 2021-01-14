@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Fool Around on CodeTalk</title>
+    <link>http://oddcc.github.io/categories/Fool-Around/</link>
+    <description>Recent content in Fool Around on CodeTalk</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 10 Dec 2020 03:25:10 +0000</lastBuildDate><atom:link href="http://oddcc.github.io/categories/Fool-Around/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>威联通 453Bmini 静态卷扩容记录</title>
+      <link>http://oddcc.github.io/2020/12/%E5%A8%81%E8%81%94%E9%80%9A-453bmini-%E9%9D%99%E6%80%81%E5%8D%B7%E6%89%A9%E5%AE%B9%E8%AE%B0%E5%BD%95/</link>
+      <pubDate>Thu, 10 Dec 2020 03:25:10 +0000</pubDate>
+      
+      <guid>http://oddcc.github.io/2020/12/%E5%A8%81%E8%81%94%E9%80%9A-453bmini-%E9%9D%99%E6%80%81%E5%8D%B7%E6%89%A9%E5%AE%B9%E8%AE%B0%E5%BD%95/</guid>
+      <description>&lt;h2 id=&#34;背景&#34;&gt;背景&lt;/h2&gt;
+&lt;p&gt;这个NAS当初买回来的时候还比较青涩，配了一个4T的盘并且没有做好规划。当时只是认定了要使用静态卷来存储，不使用各种Raid，没有仔细考虑过如果4T的盘满了，要如何进行扩容。&lt;/p&gt;
+&lt;p&gt;事实上一旦开始囤电影电视剧，这块4T的盘很快就满了。威联通是有系统盘一说的，虽然可以选则APP装在哪个盘上，但像我这种情况，肯定都是装在4T的盘上的，所以盘中除了资料之外，还有整个NAS的配置，各种Docker、虚拟机等等，甚至家里的主路由都跑在这台NAS上。&lt;/p&gt;
+&lt;p&gt;为了避免把这么多东西都重新配置一遍，我想做到无痛扩容，本来以为会有类似TimeMachine迁移的方法，直接把新硬盘插上，直接迁移就可以，结果发现并没有…官方的扩容方法只能是通过组Raid来进行扩容，并且官方没有把Raid转为静态卷的方法。不得已只能冒着损失资料的风险自己折腾了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>记一次 Xbox One 手柄的复活</title>
+      <link>http://oddcc.github.io/2020/08/%E8%AE%B0%E4%B8%80%E6%AC%A1-xbox-one-%E6%89%8B%E6%9F%84%E7%9A%84%E5%A4%8D%E6%B4%BB/</link>
+      <pubDate>Mon, 03 Aug 2020 08:44:20 +0000</pubDate>
+      
+      <guid>http://oddcc.github.io/2020/08/%E8%AE%B0%E4%B8%80%E6%AC%A1-xbox-one-%E6%89%8B%E6%9F%84%E7%9A%84%E5%A4%8D%E6%B4%BB/</guid>
+      <description>&lt;p&gt;新装了一台电脑，终于可以在这台4k屏幕上打游戏了……激动的拿出来尘封许久的Xbox One的手柄，发现按了开关之后一点反应都没有，打开电池仓一看，电池漏液了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>如何在新电脑上玩那些低分辨率的老游戏？</title>
+      <link>http://oddcc.github.io/2020/07/%E5%A6%82%E4%BD%95%E5%9C%A8%E6%96%B0%E7%94%B5%E8%84%91%E4%B8%8A%E7%8E%A9%E9%82%A3%E4%BA%9B%E4%BD%8E%E5%88%86%E8%BE%A8%E7%8E%87%E7%9A%84%E8%80%81%E6%B8%B8%E6%88%8F%EF%BC%9F/</link>
+      <pubDate>Wed, 22 Jul 2020 09:07:36 +0000</pubDate>
+      
+      <guid>http://oddcc.github.io/2020/07/%E5%A6%82%E4%BD%95%E5%9C%A8%E6%96%B0%E7%94%B5%E8%84%91%E4%B8%8A%E7%8E%A9%E9%82%A3%E4%BA%9B%E4%BD%8E%E5%88%86%E8%BE%A8%E7%8E%87%E7%9A%84%E8%80%81%E6%B8%B8%E6%88%8F%EF%BC%9F/</guid>
+      <description>&lt;h2 id=&#34;事情的起因是这样的&#34;&gt;事情的起因是这样的……&lt;/h2&gt;
+&lt;p&gt;我日常使用的主力是一台 MacBook Pro (15-inch, 2017) 在工作之余，也用它开虚拟机打打老游戏。一方面是确实怀旧，总感觉现在新的游戏虽然画面很绚，但是游戏就是不好玩；另一方面是 MacBook 也就只能玩玩老游戏了（摔）。&lt;/p&gt;
+&lt;p&gt;用的虚拟机是 Parallels Desktop，有时会在27寸的外接屏幕上玩，所以就遇到一个问题，就是分辨率的问题。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Shell 快速上手</title>
+      <link>http://oddcc.github.io/2020/04/shell-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/</link>
+      <pubDate>Wed, 01 Apr 2020 14:01:02 +0000</pubDate>
+      
+      <guid>http://oddcc.github.io/2020/04/shell-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/</guid>
+      <description>&lt;h2 id=&#34;什么是shell&#34;&gt;什么是Shell？&lt;/h2&gt;
+&lt;p&gt;现代的电脑可以以很多种方式跟人进行交互，如图形界面，语音，甚至AR/VR都可以实现交互。使用这些方式已经可以满足绝大部分的用户需求了，但是使用这些交互方式，我们的行为依然是受限的。我们使用的是已经被定义好的功能的集合，以图形界面来说，每一个按钮的行为都是已经被编写图形界面的程序员写好的，我们没法通过图形界面做到没有被定义过的行为。&lt;/p&gt;
+&lt;p&gt;这就意味着始终有一些功能，电脑是可以做到的，但是我们却无法通过图形界面等方式告诉电脑做这些事情。但利用 shell 则不同，通过 shell，我们可以利用电脑提供的所有功能。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

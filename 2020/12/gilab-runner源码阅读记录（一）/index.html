@@ -1,0 +1,867 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>gilab-runner源码阅读记录（一） | CodeTalk</title>
+    <meta property="og:title" content="gilab-runner源码阅读记录（一） - CodeTalk">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2020-12-23T08:21:09&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2020-12-23T08:21:09&#43;08:00'>
+        
+    <meta name="Keywords" content="golang,go语言,oddcc,java,博客,python,软件架构">
+    <meta name="description" content="gilab-runner源码阅读记录（一）">
+        <meta name="author" content="oddcc">
+        
+    <meta property="og:url" content="http://oddcc.github.io/2020/12/gilab-runner%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="http://oddcc.github.io/">
+                        CodeTalk
+                    </a>
+                
+                <p class="description">记录，思考，分享</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="http://oddcc.github.io/">首页</a>
+                    
+                    <a  href="http://oddcc.github.io/archives/" title="归档">归档</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: fixed;
+        width: 200px;
+        margin-left: -210px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 70%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 20px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .post-toc .post-toc-content {
+        font-size: 15px;
+    }
+
+    .post-toc .post-toc-content>nav>ul {
+        margin: 10px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 20px;
+        list-style: square;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul {
+        padding-left: 15px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="position: absolute; top: 188px;">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#背景">背景</a></li>
+    <li><a href="#启动流程">启动流程</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var leftPos = $("#main").offset().left;
+            if(leftPos<220){
+                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+    })
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">gilab-runner源码阅读记录（一）</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年12月23日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/Golang'>Golang</a></span>
+            
+        </div>
+        
+        
+        
+        <div class="post-content">
+            <h2 id="背景">背景</h2>
+<p>接之前的文章，单纯把整个流程调通了上到生产环境发现还是不满足所有需求。比如：</p>
+<ol>
+<li>不支持指定多个subnet和instance-type，导致的结果就是如果指定了subnet和instance-type，就只能在一个zone中请求spot实例，经常会出现没有相关资源的情况（capacity-not-available）。这时候所有CI请求就被block住了，因为没有新的机器可以运行，只能等已有任务跑完，复用已有的机器</li>
+<li>既然是为了节省成本，当然选比较低配的机型，只要能跑通CI即可。但是有一些项目需要的资源是比较高的，我们选的机型是2C2G的机型，某些项目跑CI就会出现OOM（out of memory）的情况。</li>
+</ol>
+<p>对于问题1，我们需要gitlab-runner支持配置多个subnet和instance-type，当拿不到机器的时候，就自动按照配置进行尝试，而不是傻等。</p>
+<p>对于问题2，出现了就很难短时间解决，一旦出现此问题，对工作效率影响还是很大的。因为就算此时修改配置，重启runner，也不能保证之后该项目的任务可以分配到高配机器上。</p>
+<p>如果不修改代码，只有2个方案：</p>
+<p>一个是统一使用高配机型，这显然是不经济的，而且不解决根本问题，谁知道后续还有没有要求更高的项目呢？</p>
+<p>另一个是碰到这种项目，就在gitlab后台进行runner的绑定并在项目级停用默认的runner，把这些项目绑定到一个高配的runner上。但是我们的工作流程是参考开源项目的流程，提交代码都是fork项目之后提pr的方式来进行的，针对每一个项目都要提工单，手动分配runner，很麻烦，也遭到了运维的反对，毕竟是额外的工作量。</p>
+<p>所以我们需要runner能根据项目名称来修改docker-machine的参数，去请求高配的机型，且之后有该项目的CI任务过来，也要分配到高配的机型上面来运行。</p>
+<p>其中docker-machine部分的修改比较容易，但是gitlab-runner的逻辑就比较复杂，这篇记录下runner的启动流程。</p>
+<h2 id="启动流程">启动流程</h2>
+<p>gitlab-runner的启动（gitlab-runner run）流程依赖两个项目</p>
+<p><a href="https://github.com/urfave/cli">https://github.com/urfave/cli</a></p>
+<p><a href="https://github.com/ayufan/golang-kardianos-service">https://github.com/ayufan/golang-kardianos-service</a></p>
+<p>可以稍微熟悉一下用法，其中golang-kardianos-service没啥详细文档，比较反人类，后面会着重提下</p>
+<p>入口在项目目录的main.go中，Commands的注册是通过各个包的init()方法完成的，具体之后执行逻辑可根据运行的命令找到具体的包，我们要找的是 gitlab-runner run 命令，所以找到commands包</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#998;font-style:italic">// ./main.go
+</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">package</span> main
+
+<span style="color:#000;font-weight:bold">import</span> (
+   <span style="color:#000;font-weight:bold">...</span>
+   _ <span style="color:#d14">&#34;gitlab.com/gitlab-org/gitlab-runner/cache/azure&#34;</span>
+   _ <span style="color:#d14">&#34;gitlab.com/gitlab-org/gitlab-runner/cache/gcs&#34;</span>
+   _ <span style="color:#d14">&#34;gitlab.com/gitlab-org/gitlab-runner/cache/s3&#34;</span>
+   _ <span style="color:#d14">&#34;gitlab.com/gitlab-org/gitlab-runner/commands&#34;</span>
+   _ <span style="color:#d14">&#34;gitlab.com/gitlab-org/gitlab-runner/commands/helpers&#34;</span>
+   _ <span style="color:#d14">&#34;gitlab.com/gitlab-org/gitlab-runner/executors/custom&#34;</span>
+   _ <span style="color:#d14">&#34;gitlab.com/gitlab-org/gitlab-runner/executors/docker&#34;</span>
+   _ <span style="color:#d14">&#34;gitlab.com/gitlab-org/gitlab-runner/executors/docker/machine&#34;</span>
+   _ <span style="color:#d14">&#34;gitlab.com/gitlab-org/gitlab-runner/executors/kubernetes&#34;</span>
+   _ <span style="color:#d14">&#34;gitlab.com/gitlab-org/gitlab-runner/executors/parallels&#34;</span>
+   _ <span style="color:#d14">&#34;gitlab.com/gitlab-org/gitlab-runner/executors/shell&#34;</span>
+   _ <span style="color:#d14">&#34;gitlab.com/gitlab-org/gitlab-runner/executors/ssh&#34;</span>
+   _ <span style="color:#d14">&#34;gitlab.com/gitlab-org/gitlab-runner/executors/virtualbox&#34;</span>
+   _ <span style="color:#d14">&#34;gitlab.com/gitlab-org/gitlab-runner/helpers/secrets/resolvers/vault&#34;</span>
+   _ <span style="color:#d14">&#34;gitlab.com/gitlab-org/gitlab-runner/shells&#34;</span>
+)
+
+<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">main</span>() {
+   <span style="color:#000;font-weight:bold">...</span>
+   app <span style="color:#000;font-weight:bold">:=</span> cli.<span style="color:#900;font-weight:bold">NewApp</span>()
+   app.Name = path.<span style="color:#900;font-weight:bold">Base</span>(os.Args[<span style="color:#099">0</span>])
+   <span style="color:#000;font-weight:bold">...</span>
+   app.Commands = common.<span style="color:#900;font-weight:bold">GetCommands</span>() <span style="color:#998;font-style:italic">// Commands的注册是在前面那一堆import中，是利用包的初始化机制完成的，逻辑在各个包的init()方法中
+</span><span style="color:#998;font-style:italic"></span>   app.CommandNotFound = <span style="color:#000;font-weight:bold">func</span>(context <span style="color:#000;font-weight:bold">*</span>cli.Context, command <span style="color:#458;font-weight:bold">string</span>) {
+      logrus.<span style="color:#900;font-weight:bold">Fatalln</span>(<span style="color:#d14">&#34;Command&#34;</span>, command, <span style="color:#d14">&#34;not found.&#34;</span>)
+   }
+   <span style="color:#000;font-weight:bold">...</span>
+
+   <span style="color:#998;font-style:italic">// 控制权交给了cli框架，之后执行的逻辑取决于Command.Action方法
+</span><span style="color:#998;font-style:italic"></span>   <span style="color:#000;font-weight:bold">if</span> err <span style="color:#000;font-weight:bold">:=</span> app.<span style="color:#900;font-weight:bold">Run</span>(os.Args); err <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">nil</span> {
+      logrus.<span style="color:#900;font-weight:bold">Fatal</span>(err)
+   }
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>commands包的init()方法在 commands/multi.go 文件中，我们可以看到，实际执行的逻辑是 RunCommand.Execute() 方法</p>
+<p>其中利用golang-kardianos-service项目，把逻辑封装成了Service，下一步执行逻辑在 RunCommand.Start()方法中</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#998;font-style:italic">// ./commands/multi.go
+</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">package</span> commands
+
+<span style="color:#000;font-weight:bold">...</span>
+
+
+<span style="color:#998;font-style:italic">// run 命令实际的运行逻辑
+</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">func</span> (mr <span style="color:#000;font-weight:bold">*</span>RunCommand) <span style="color:#900;font-weight:bold">Execute</span>(_ <span style="color:#000;font-weight:bold">*</span>cli.Context) {
+   svcConfig <span style="color:#000;font-weight:bold">:=</span> <span style="color:#000;font-weight:bold">&amp;</span>service.Config{
+      Name:        mr.ServiceName,
+      DisplayName: mr.ServiceName,
+      Description: defaultDescription,
+      Arguments:   []<span style="color:#458;font-weight:bold">string</span>{<span style="color:#d14">&#34;run&#34;</span>},
+      Option: service.KeyValue{
+         <span style="color:#d14">&#34;RunWait&#34;</span>: mr.runWait,
+      },
+   }
+
+   svc, err <span style="color:#000;font-weight:bold">:=</span> service_helpers.<span style="color:#900;font-weight:bold">New</span>(mr, svcConfig) <span style="color:#998;font-style:italic">// 新建了一个 Service
+</span><span style="color:#998;font-style:italic"></span>   <span style="color:#000;font-weight:bold">if</span> err <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">nil</span> {
+      logrus.<span style="color:#900;font-weight:bold">WithError</span>(err).
+         <span style="color:#900;font-weight:bold">Fatalln</span>(<span style="color:#d14">&#34;Service creation failed&#34;</span>)
+   }
+
+   <span style="color:#000;font-weight:bold">if</span> mr.Syslog {
+      log.<span style="color:#900;font-weight:bold">SetSystemLogger</span>(logrus.<span style="color:#900;font-weight:bold">StandardLogger</span>(), svc)
+   }
+
+   logrus.<span style="color:#900;font-weight:bold">AddHook</span>(<span style="color:#000;font-weight:bold">&amp;</span>mr.sentryLogHook)
+   logrus.<span style="color:#900;font-weight:bold">AddHook</span>(<span style="color:#000;font-weight:bold">&amp;</span>mr.prometheusLogHook)
+
+   err = svc.<span style="color:#900;font-weight:bold">Run</span>() <span style="color:#998;font-style:italic">// Service.Run()的调用会阻塞，直到Service.Stop()执行完成，
+</span><span style="color:#998;font-style:italic"></span>   <span style="color:#000;font-weight:bold">if</span> err <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">nil</span> {
+      logrus.<span style="color:#900;font-weight:bold">WithError</span>(err).
+         <span style="color:#900;font-weight:bold">Fatal</span>(<span style="color:#d14">&#34;Service run failed&#34;</span>)
+   }
+}
+
+
+<span style="color:#000;font-weight:bold">...</span>
+
+<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">init</span>() {
+   requestStatusesCollector <span style="color:#000;font-weight:bold">:=</span> network.<span style="color:#900;font-weight:bold">NewAPIRequestStatusesMap</span>()
+
+   common.<span style="color:#900;font-weight:bold">RegisterCommand2</span>( <span style="color:#998;font-style:italic">// run 命令对应的是 RunCommand
+</span><span style="color:#998;font-style:italic"></span>      <span style="color:#d14">&#34;run&#34;</span>,
+      <span style="color:#d14">&#34;run multi runner service&#34;</span>,
+      <span style="color:#000;font-weight:bold">&amp;</span>RunCommand{
+         ServiceName:                     defaultServiceName,
+         network:                         network.<span style="color:#900;font-weight:bold">NewGitLabClientWithRequestStatusesMap</span>(requestStatusesCollector),
+         networkRequestStatusesCollector: requestStatusesCollector,
+         prometheusLogHook:               prometheus_helper.<span style="color:#900;font-weight:bold">NewLogHook</span>(),
+         failuresCollector:               prometheus_helper.<span style="color:#900;font-weight:bold">NewFailuresCollector</span>(),
+         buildsHelper:                    <span style="color:#900;font-weight:bold">newBuildsHelper</span>(),
+      },
+   )
+}
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#998;font-style:italic">// ./common/command.go
+</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">package</span> common
+
+<span style="color:#000;font-weight:bold">import</span> (
+   <span style="color:#d14">&#34;github.com/sirupsen/logrus&#34;</span>
+   <span style="color:#d14">&#34;github.com/urfave/cli&#34;</span>
+   clihelpers <span style="color:#d14">&#34;gitlab.com/ayufan/golang-cli-helpers&#34;</span>
+)
+
+<span style="color:#000;font-weight:bold">var</span> commands []cli.Command
+
+<span style="color:#000;font-weight:bold">type</span> Commander <span style="color:#000;font-weight:bold">interface</span> {
+   <span style="color:#900;font-weight:bold">Execute</span>(c <span style="color:#000;font-weight:bold">*</span>cli.Context)
+}
+
+<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">RegisterCommand</span>(command cli.Command) {
+   logrus.<span style="color:#900;font-weight:bold">Debugln</span>(<span style="color:#d14">&#34;Registering&#34;</span>, command.Name, <span style="color:#d14">&#34;command...&#34;</span>)
+   commands = <span style="color:#0086b3">append</span>(commands, command)
+}
+
+<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">RegisterCommand2</span>(name, usage <span style="color:#458;font-weight:bold">string</span>, data Commander, flags <span style="color:#000;font-weight:bold">...</span>cli.Flag) {
+   <span style="color:#900;font-weight:bold">RegisterCommand</span>(cli.Command{
+      Name:   name,
+      Usage:  usage,
+      Action: data.Execute, <span style="color:#998;font-style:italic">// Action 对应的是 data.Execute
+</span><span style="color:#998;font-style:italic"></span>      Flags:  <span style="color:#0086b3">append</span>(flags, clihelpers.<span style="color:#900;font-weight:bold">GetFlagsFromStruct</span>(data)<span style="color:#000;font-weight:bold">...</span>),
+   })
+}
+
+<span style="color:#000;font-weight:bold">func</span> <span style="color:#900;font-weight:bold">GetCommands</span>() []cli.Command {
+   <span style="color:#000;font-weight:bold">return</span> commands
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>RunCommand.Start() 另启动了一个 goroutine 来运行实际逻辑，并把控制权转给了 RunCommand.runWait() 方法，实际运行的逻辑在 RunCommand.run() 方法中，至此，启动流程完成</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">66
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">67
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">68
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">69
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">70
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">71
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">72
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">73
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">74
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">75
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">76
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">77
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">78
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">79
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">80
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">81
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#998;font-style:italic">// ./commands/multi.go
+</span><span style="color:#998;font-style:italic">// Start is the method implementing `github.com/ayufan/golang-kardianos-service`.`Interface`
+</span><span style="color:#998;font-style:italic">// interface. It&#39;s responsible for a non-blocking initialization of the process. When it exits,
+</span><span style="color:#998;font-style:italic">// the main control flow is passed to runWait() configured as service&#39;s RunWait method. Take a look
+</span><span style="color:#998;font-style:italic">// into Execute() for details.
+</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">func</span> (mr <span style="color:#000;font-weight:bold">*</span>RunCommand) <span style="color:#900;font-weight:bold">Start</span>(_ service.Service) <span style="color:#458;font-weight:bold">error</span> {
+    mr.abortBuilds = <span style="color:#0086b3">make</span>(<span style="color:#000;font-weight:bold">chan</span> os.Signal)
+    mr.runSignal = <span style="color:#0086b3">make</span>(<span style="color:#000;font-weight:bold">chan</span> os.Signal, <span style="color:#099">1</span>)
+    mr.reloadSignal = <span style="color:#0086b3">make</span>(<span style="color:#000;font-weight:bold">chan</span> os.Signal, <span style="color:#099">1</span>)
+    mr.runFinished = <span style="color:#0086b3">make</span>(<span style="color:#000;font-weight:bold">chan</span> <span style="color:#458;font-weight:bold">bool</span>, <span style="color:#099">1</span>)
+    mr.stopSignals = <span style="color:#0086b3">make</span>(<span style="color:#000;font-weight:bold">chan</span> os.Signal)
+
+    mr.<span style="color:#900;font-weight:bold">log</span>().<span style="color:#900;font-weight:bold">Info</span>(<span style="color:#d14">&#34;Starting multi-runner from &#34;</span>, mr.ConfigFile, <span style="color:#d14">&#34;...&#34;</span>)
+     
+    <span style="color:#900;font-weight:bold">userModeWarning</span>(<span style="color:#000;font-weight:bold">false</span>)
+     
+    <span style="color:#000;font-weight:bold">if</span> <span style="color:#0086b3">len</span>(mr.WorkingDirectory) <span style="color:#000;font-weight:bold">&amp;</span>gt; <span style="color:#099">0</span> {
+        err <span style="color:#000;font-weight:bold">:=</span> os.<span style="color:#900;font-weight:bold">Chdir</span>(mr.WorkingDirectory)
+        <span style="color:#000;font-weight:bold">if</span> err <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">nil</span> {
+            <span style="color:#000;font-weight:bold">return</span> err
+        }
+    }
+     
+    err <span style="color:#000;font-weight:bold">:=</span> mr.<span style="color:#900;font-weight:bold">loadConfig</span>() <span style="color:#998;font-style:italic">// 加载配置
+</span><span style="color:#998;font-style:italic"></span>    <span style="color:#000;font-weight:bold">if</span> err <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">nil</span> {
+        <span style="color:#000;font-weight:bold">return</span> err
+    }
+     
+    <span style="color:#998;font-style:italic">// Start should not block. Do the actual work async.
+</span><span style="color:#998;font-style:italic"></span>    <span style="color:#000;font-weight:bold">go</span> mr.<span style="color:#900;font-weight:bold">run</span>() <span style="color:#998;font-style:italic">// 实际业务逻辑
+</span><span style="color:#998;font-style:italic"></span>     
+    <span style="color:#000;font-weight:bold">return</span> <span style="color:#000;font-weight:bold">nil</span>
+}
+
+<span style="color:#998;font-style:italic">// run is the main method of RunCommand. It&#39;s started asynchronously by services support
+</span><span style="color:#998;font-style:italic">// through `Start` method and is responsible for initializing all goroutines handling
+</span><span style="color:#998;font-style:italic">// concurrent, multi-runner execution of jobs.
+</span><span style="color:#998;font-style:italic">// When mr.stopSignal is broadcasted (after `Stop` is called by services support)
+</span><span style="color:#998;font-style:italic">// this method waits for all workers to be terminated and closes the mr.runFinished
+</span><span style="color:#998;font-style:italic">// channel, which is the signal that the command was properly terminated (this is the only
+</span><span style="color:#998;font-style:italic">// valid, properly terminated exit flow for `gitlab-runner run`).
+</span><span style="color:#998;font-style:italic"></span><span style="color:#000;font-weight:bold">func</span> (mr <span style="color:#000;font-weight:bold">*</span>RunCommand) <span style="color:#900;font-weight:bold">run</span>() {
+    mr.<span style="color:#900;font-weight:bold">setupMetricsAndDebugServer</span>()
+    mr.<span style="color:#900;font-weight:bold">setupSessionServer</span>()
+
+    runners <span style="color:#000;font-weight:bold">:=</span> <span style="color:#0086b3">make</span>(<span style="color:#000;font-weight:bold">chan</span> <span style="color:#000;font-weight:bold">*</span>common.RunnerConfig)
+    <span style="color:#000;font-weight:bold">go</span> mr.<span style="color:#900;font-weight:bold">feedRunners</span>(runners)
+     
+    signal.<span style="color:#900;font-weight:bold">Notify</span>(mr.stopSignals, syscall.SIGQUIT, syscall.SIGTERM, os.Interrupt)
+    signal.<span style="color:#900;font-weight:bold">Notify</span>(mr.reloadSignal, syscall.SIGHUP)
+     
+    startWorker <span style="color:#000;font-weight:bold">:=</span> <span style="color:#0086b3">make</span>(<span style="color:#000;font-weight:bold">chan</span> <span style="color:#458;font-weight:bold">int</span>)
+    stopWorker <span style="color:#000;font-weight:bold">:=</span> <span style="color:#0086b3">make</span>(<span style="color:#000;font-weight:bold">chan</span> <span style="color:#458;font-weight:bold">bool</span>)
+    <span style="color:#000;font-weight:bold">go</span> mr.<span style="color:#900;font-weight:bold">startWorkers</span>(startWorker, stopWorker, runners)
+     
+    workerIndex <span style="color:#000;font-weight:bold">:=</span> <span style="color:#099">0</span>
+     
+    <span style="color:#998;font-style:italic">// Update number of workers and reload configuration.
+</span><span style="color:#998;font-style:italic"></span>    <span style="color:#998;font-style:italic">// Exits when mr.runSignal receives a signal.
+</span><span style="color:#998;font-style:italic"></span>    <span style="color:#000;font-weight:bold">for</span> mr.stopSignal <span style="color:#000;font-weight:bold">==</span> <span style="color:#000;font-weight:bold">nil</span> {
+        signaled <span style="color:#000;font-weight:bold">:=</span> mr.<span style="color:#900;font-weight:bold">updateWorkers</span>(<span style="color:#000;font-weight:bold">&amp;</span>workerIndex, startWorker, stopWorker)
+        <span style="color:#000;font-weight:bold">if</span> signaled <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">nil</span> {
+            <span style="color:#000;font-weight:bold">break</span>
+        }
+     
+        signaled = mr.<span style="color:#900;font-weight:bold">updateConfig</span>()
+        <span style="color:#000;font-weight:bold">if</span> signaled <span style="color:#000;font-weight:bold">!=</span> <span style="color:#000;font-weight:bold">nil</span> {
+            <span style="color:#000;font-weight:bold">break</span>
+        }
+    }
+     
+    <span style="color:#998;font-style:italic">// Wait for workers to shutdown
+</span><span style="color:#998;font-style:italic"></span>    <span style="color:#000;font-weight:bold">for</span> mr.currentWorkers <span style="color:#000;font-weight:bold">&amp;</span>gt; <span style="color:#099">0</span> {
+        stopWorker <span style="color:#000;font-weight:bold">&amp;</span>lt;<span style="color:#000;font-weight:bold">-</span> <span style="color:#000;font-weight:bold">true</span>
+        mr.currentWorkers<span style="color:#000;font-weight:bold">--</span>
+    }
+     
+    mr.<span style="color:#900;font-weight:bold">log</span>().<span style="color:#900;font-weight:bold">Info</span>(<span style="color:#d14">&#34;All workers stopped. Can exit now&#34;</span>)
+     
+    <span style="color:#0086b3">close</span>(mr.runFinished)
+}
+</code></pre></td></tr></table>
+</div>
+</div>
+        </div>
+
+        
+<div class="post-archive">
+    <ul class="post-copyright">
+        <li><strong>原文作者：</strong><a rel="author" href="http://oddcc.github.io/">oddcc</a></li>
+        <li style="word-break:break-all"><strong>原文链接：</strong><a href="http://oddcc.github.io/2020/12/gilab-runner%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89/">http://oddcc.github.io/2020/12/gilab-runner%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89/</a></li>
+        <li><strong>版权声明：</strong>本作品采用<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可，非商业转载请注明出处（作者，原文链接），商业转载请联系作者获得授权。</li>
+    </ul>
+</div>
+<br/>
+
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/2020/12/%E5%A8%81%E8%81%94%E9%80%9A-453bmini-%E9%9D%99%E6%80%81%E5%8D%B7%E6%89%A9%E5%AE%B9%E8%AE%B0%E5%BD%95/">威联通 453Bmini 静态卷扩容记录</a></li>
+        
+        <li><a href="/2020/11/%E6%8E%A5%E8%A7%A6%E4%BA%86%E4%B8%80%E4%BA%9B%E6%96%B0%E8%AF%AD%E8%A8%80%E5%90%8E%EF%BC%8C%E5%9B%9E%E5%A4%B4%E7%9C%8Bjava-8%E4%B9%8B%E5%90%8E%E7%9A%84%E6%9B%B4%E6%96%B0/">接触了一些新语言后，回头看Java 8之后的更新</a></li>
+        
+        <li><a href="/2020/11/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%A2%AB%E8%BF%AB%E5%8F%82%E5%8A%A0%E5%BC%80%E6%BA%90%E7%9A%84%E7%BB%8F%E5%8E%86/">记一次被迫参加开源的经历</a></li>
+        
+        <li><a href="/2020/08/%E8%AE%B0%E4%B8%80%E6%AC%A1-xbox-one-%E6%89%8B%E6%9F%84%E7%9A%84%E5%A4%8D%E6%B4%BB/">记一次 Xbox One 手柄的复活</a></li>
+        
+        <li><a href="/2020/07/%E5%A6%82%E4%BD%95%E5%9C%A8%E6%96%B0%E7%94%B5%E8%84%91%E4%B8%8A%E7%8E%A9%E9%82%A3%E4%BA%9B%E4%BD%8E%E5%88%86%E8%BE%A8%E7%8E%87%E7%9A%84%E8%80%81%E6%B8%B8%E6%88%8F%EF%BC%9F/">如何在新电脑上玩那些低分辨率的老游戏？</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            没有标签
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="http://oddcc.github.io/">CodeTalk By oddcc</a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.2.8/raphael.min.js" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/flowchart/1.12.2/flowchart.min.js" crossorigin="anonymous"></script>
+        <script>(function () {
+                if (!window.flowchart) return;
+                const blocks = document.querySelectorAll('pre code.language-flowchart, pre code.language-flow');
+                for (let i = 0; i < blocks.length; i++) {
+                    const block = blocks[i];
+                    const rootElement = block.parentNode;
+                    const container = document.createElement('div');
+                    const id = `js-flowchart-diagrams-${i}`;
+                    container.id = id;
+                    container.className = 'align-center';
+                    container.setAttribute("style", "overFlow-x:auto");
+                    rootElement.parentNode.replaceChild(container, rootElement);
+                    const diagram = flowchart.parse(block.childNodes[0].nodeValue);
+                    diagram.drawSVG(id, window.flowchartDiagramsOptions ? window.flowchartDiagramsOptions : {});
+                }
+            })();
+        </script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/snap.svg/0.5.1/snap.svg-min.js" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/js-sequence-diagrams/1.0.6/sequence-diagram-min.js" crossorigin="anonymous"></script>
+        <script>(function () {
+            if (!window.Diagram) return;
+            const blocks = document.querySelectorAll('pre code.language-sequence');
+            for (let i = 0; i < blocks.length; i++) {
+                const block = blocks[i];
+                
+                const rootElement = block.parentNode;
+                const container = document.createElement('div');
+                const id = `js-sequence-diag-${i}`;
+                container.id = id;
+                container.className = 'align-center';
+                container.setAttribute("style", "overFlow-x:auto");
+                rootElement.parentNode.replaceChild(container, rootElement);
+
+                const diagram = Diagram.parse(block.childNodes[0].nodeValue);
+                diagram.drawSVG(id, window.sequenceDiagramsOptions
+                    ? window.sequenceDiagramsOptions
+                    : { theme: 'simple' });
+            }
+        })();
+        </script><script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='http://oddcc.github.io/search/' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="http://oddcc.github.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="http://oddcc.github.io/2020/12/gilab-runner%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89/" title="gilab-runner源码阅读记录（一）">gilab-runner源码阅读记录（一）</a>
+    </li>
+    
+    <li>
+        <a href="http://oddcc.github.io/2020/12/%E5%A8%81%E8%81%94%E9%80%9A-453bmini-%E9%9D%99%E6%80%81%E5%8D%B7%E6%89%A9%E5%AE%B9%E8%AE%B0%E5%BD%95/" title="威联通 453Bmini 静态卷扩容记录">威联通 453Bmini 静态卷扩容记录</a>
+    </li>
+    
+    <li>
+        <a href="http://oddcc.github.io/2020/11/%E6%8E%A5%E8%A7%A6%E4%BA%86%E4%B8%80%E4%BA%9B%E6%96%B0%E8%AF%AD%E8%A8%80%E5%90%8E%EF%BC%8C%E5%9B%9E%E5%A4%B4%E7%9C%8Bjava-8%E4%B9%8B%E5%90%8E%E7%9A%84%E6%9B%B4%E6%96%B0/" title="接触了一些新语言后，回头看Java 8之后的更新">接触了一些新语言后，回头看Java 8之后的更新</a>
+    </li>
+    
+    <li>
+        <a href="http://oddcc.github.io/2020/11/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%A2%AB%E8%BF%AB%E5%8F%82%E5%8A%A0%E5%BC%80%E6%BA%90%E7%9A%84%E7%BB%8F%E5%8E%86/" title="记一次被迫参加开源的经历">记一次被迫参加开源的经历</a>
+    </li>
+    
+    <li>
+        <a href="http://oddcc.github.io/2020/08/%E8%AE%B0%E4%B8%80%E6%AC%A1-xbox-one-%E6%89%8B%E6%9F%84%E7%9A%84%E5%A4%8D%E6%B4%BB/" title="记一次 Xbox One 手柄的复活">记一次 Xbox One 手柄的复活</a>
+    </li>
+    
+    <li>
+        <a href="http://oddcc.github.io/2020/07/%E5%A6%82%E4%BD%95%E5%9C%A8%E6%96%B0%E7%94%B5%E8%84%91%E4%B8%8A%E7%8E%A9%E9%82%A3%E4%BA%9B%E4%BD%8E%E5%88%86%E8%BE%A8%E7%8E%87%E7%9A%84%E8%80%81%E6%B8%B8%E6%88%8F%EF%BC%9F/" title="如何在新电脑上玩那些低分辨率的老游戏？">如何在新电脑上玩那些低分辨率的老游戏？</a>
+    </li>
+    
+    <li>
+        <a href="http://oddcc.github.io/2020/07/java-%E5%AF%B9%E8%B1%A1%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E6%98%AF%E5%A6%82%E4%BD%95%E8%A1%A8%E7%A4%BA%E7%9A%84/" title="Java 对象在内存中是如何表示的">Java 对象在内存中是如何表示的</a>
+    </li>
+    
+    <li>
+        <a href="http://oddcc.github.io/2020/04/shell-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/" title="Shell 快速上手">Shell 快速上手</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+    <li><a href="http://oddcc.github.io/categories/AWS/">AWS (1)</a></li>
+    
+    <li><a href="http://oddcc.github.io/categories/Fool-Around/">Fool Around (4)</a></li>
+    
+    <li><a href="http://oddcc.github.io/categories/Golang/">Golang (2)</a></li>
+    
+    <li><a href="http://oddcc.github.io/categories/Java/">Java (2)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="http://oddcc.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

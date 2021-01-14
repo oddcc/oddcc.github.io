@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <title>接触了一些新语言后，回头看Java 8之后的更新 | CodeTalk</title>
+    <meta property="og:title" content="接触了一些新语言后，回头看Java 8之后的更新 - CodeTalk">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2020-11-30T08:18:02&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2020-11-30T08:18:02&#43;08:00'>
+        
+    <meta name="Keywords" content="golang,go语言,oddcc,java,博客,python,软件架构">
+    <meta name="description" content="接触了一些新语言后，回头看Java 8之后的更新">
+        <meta name="author" content="oddcc">
+        
+    <meta property="og:url" content="http://oddcc.github.io/2020/11/%E6%8E%A5%E8%A7%A6%E4%BA%86%E4%B8%80%E4%BA%9B%E6%96%B0%E8%AF%AD%E8%A8%80%E5%90%8E%EF%BC%8C%E5%9B%9E%E5%A4%B4%E7%9C%8Bjava-8%E4%B9%8B%E5%90%8E%E7%9A%84%E6%9B%B4%E6%96%B0/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="http://oddcc.github.io/">
+                        CodeTalk
+                    </a>
+                
+                <p class="description">记录，思考，分享</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="http://oddcc.github.io/">首页</a>
+                    
+                    <a  href="http://oddcc.github.io/archives/" title="归档">归档</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: fixed;
+        width: 200px;
+        margin-left: -210px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 70%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 20px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .post-toc .post-toc-content {
+        font-size: 15px;
+    }
+
+    .post-toc .post-toc-content>nav>ul {
+        margin: 10px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 20px;
+        list-style: square;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul {
+        padding-left: 15px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="position: absolute; top: 188px;">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#java-9">Java 9</a>
+      <ul>
+        <li><a href="#jep-213-milling-project-coin1"><a href="https://openjdk.java.net/jeps/213">JEP 213: Milling Project Coin</a></a></li>
+      </ul>
+    </li>
+    <li><a href="#java-11">Java 11</a>
+      <ul>
+        <li><a href="#jep-323-local-variable-syntax-for-lambda-parameters2"><a href="https://openjdk.java.net/jeps/323">JEP 323: Local-Variable Syntax for Lambda Parameters</a></a></li>
+      </ul>
+    </li>
+    <li><a href="#java-14">Java 14</a>
+      <ul>
+        <li><a href="#jep-361-switch-expressions3"><a href="https://openjdk.java.net/jeps/361">JEP 361: Switch Expressions</a></a></li>
+      </ul>
+    </li>
+    <li><a href="#java-15">Java 15</a>
+      <ul>
+        <li><a href="#jep-378-text-blocks5"><a href="https://openjdk.java.net/jeps/378">JEP 378: Text Blocks</a></a></li>
+      </ul>
+    </li>
+    <li><a href="#为什么怀念写java">为什么怀念写Java</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var leftPos = $("#main").offset().left;
+            if(leftPos<220){
+                postToc.css({"width":leftPos-10,"margin-left":(0-leftPos)})
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+    })
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">接触了一些新语言后，回头看Java 8之后的更新</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2020年11月30日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/Java'>Java</a></span>
+            
+        </div>
+        
+        
+        
+        <div class="post-content">
+            <p>Java一直被认为是一门啰嗦的语言，有个段子是调侃一个小项目，用Java写就会变成大项目。但Java同时也使用广泛，工程性强，写Java的人也是最多。对Java的这些特点，在没写过太多其他语言之前，我的认识很肤浅，有点人云亦云的感觉。在最近因为工作原因写了大量go、Javascript、TypeScript代码之后，再回头来看Java，居然没有像常见到的那些写了go就不想碰Java的观点一样感到轻松，而是十分怀念…</p>
+<p>下面梳理一下Java8之后的主要变化，再聊聊为什么我怀念写Java</p>
+<h2 id="java-9">Java 9</h2>
+<h3 id="jep-213-milling-project-coin1"><a href="https://openjdk.java.net/jeps/213">JEP 213: Milling Project Coin</a></h3>
+<p><strong>Interface中允许实现私有方法：</strong></p>
+<p>Java8中就有把一些工具类方法放到Interface中而不是一个空的Class里的实践，当时这种做法有个缺点，就是Class可以有私有方法，可以选择暴露哪些接口，隐藏哪些接口，而使用Interface只能写一些相对简单的逻辑，因为所有方法都会暴露。</p>
+<p>现在Interface和Class的区别更明显了，Interface更像是一个没有状态的更灵活的Class，工具类的方法没有理由再写在Class中了。</p>
+<p><strong>try-with-resources的写法优化：</strong></p>
+<p>try-with-resources的写法可以帮我们自动释放资源，减少了模版代码，增强了可读性。但在try-with-resources声明多个变量时，可读性就会下降，例如：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#000;font-weight:bold">try</span> <span style="color:#000;font-weight:bold">(</span>BufferedReader br1 <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">new</span> BufferedReader<span style="color:#000;font-weight:bold">(...);</span>
+    BufferedReader br2 <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">new</span> BufferedReader<span style="color:#000;font-weight:bold">(...))</span> <span style="color:#000;font-weight:bold">{</span>
+    System<span style="color:#000;font-weight:bold">.</span><span style="color:#008080">out</span><span style="color:#000;font-weight:bold">.</span><span style="color:#008080">println</span><span style="color:#000;font-weight:bold">(</span>br1<span style="color:#000;font-weight:bold">.</span><span style="color:#008080">readLine</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#000;font-weight:bold">+</span> br2<span style="color:#000;font-weight:bold">.</span><span style="color:#008080">readLine</span><span style="color:#000;font-weight:bold">());</span>
+<span style="color:#000;font-weight:bold">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Java 9之后我们可以这样写，可读性有了明显提高：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">BufferedReader br1 <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">new</span> BufferedReader<span style="color:#000;font-weight:bold">(...);</span>
+BufferedReader br2 <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">new</span> BufferedReader<span style="color:#000;font-weight:bold">(...);</span>
+<span style="color:#000;font-weight:bold">try</span> <span style="color:#000;font-weight:bold">(</span>br1<span style="color:#000;font-weight:bold">;</span> br2<span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+    System<span style="color:#000;font-weight:bold">.</span><span style="color:#008080">out</span><span style="color:#000;font-weight:bold">.</span><span style="color:#008080">println</span><span style="color:#000;font-weight:bold">(</span>br1<span style="color:#000;font-weight:bold">.</span><span style="color:#008080">readLine</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#000;font-weight:bold">+</span> br2<span style="color:#000;font-weight:bold">.</span><span style="color:#008080">readLine</span><span style="color:#000;font-weight:bold">());</span>
+<span style="color:#000;font-weight:bold">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>单独的下划线（<code>_</code>）不再是合法的变量名：</strong></p>
+<p>在许多语言中，如果一个变量名是<code>_</code>，那么通常表示这个变量不重要，可以忽略；显然设计者Java中也出现这种用法，现在把这条路彻底堵死了，即把设计往前提，从API层面就返回<code>void</code>，而不是返回了一个值，却去忽略它。</p>
+<h2 id="java-11">Java 11</h2>
+<h3 id="jep-323-local-variable-syntax-for-lambda-parameters2"><a href="https://openjdk.java.net/jeps/323">JEP 323: Local-Variable Syntax for Lambda Parameters</a></h3>
+<p><strong>Java允许用<code>var</code>声明本地变量了：</strong></p>
+<p>不用声明参数类型，类型由编译器去推断。这是我比较不喜欢的一个改动，社区的说法是：</p>
+<blockquote>
+<p>We seek to improve the developer experience by reducing the ceremony associated with writing Java code, while maintaining Java’s commitment to static type safety.</p>
+</blockquote>
+<p>显然，社区是为了开发者写的时候能少点模版代码，提升开发体验。虽然这个改动非常克制，即只能用于声明本地变量，理论上来说，如果代码都是短方法组成的，声明的地方和使用的地方很近，那么这个改动就无关紧要。但现实是业务逻辑中由于各种原因，经常能见到成百上千行的遗留代码，经年累月往上叠加逻辑，不是重构基本没人愿意去动它。如果加上一堆<code>var</code>变量，对本来就糟糕的可读性来说无疑是雪上加霜了…</p>
+<p>所以想要升级到Java 11的团队，最好做好代码规范和CR吧，不要等到屎山已经形成了才想到可维护性。</p>
+<h2 id="java-14">Java 14</h2>
+<h3 id="jep-361-switch-expressions3"><a href="https://openjdk.java.net/jeps/361">JEP 361: Switch Expressions</a></h3>
+<p><strong>新的switch写法：</strong></p>
+<p>我个人非常喜欢这个改动，值得多写几笔来聊聊这个改动。这个改动并不是像上面的演示一样，仅仅是支持箭头操作符、yield关键字这么简单。还有以下几个重要的改变</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#458;font-weight:bold">int</span> numLetters <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">switch</span> <span style="color:#000;font-weight:bold">(</span>day<span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#000;font-weight:bold">case</span> MONDAY<span style="color:#000;font-weight:bold">,</span> FRIDAY<span style="color:#000;font-weight:bold">,</span> SUNDAY <span style="color:#000;font-weight:bold">-&gt;;</span> 6<span style="color:#000;font-weight:bold">;</span>
+    <span style="color:#000;font-weight:bold">case</span> TUESDAY                <span style="color:#000;font-weight:bold">-&gt;;</span> 7<span style="color:#000;font-weight:bold">;</span>
+    <span style="color:#000;font-weight:bold">default</span>      <span style="color:#000;font-weight:bold">-&gt;;</span> <span style="color:#000;font-weight:bold">{</span>
+        String s <span style="color:#000;font-weight:bold">=</span> day<span style="color:#000;font-weight:bold">.</span><span style="color:#008080">toString</span><span style="color:#000;font-weight:bold">();</span>
+        <span style="color:#458;font-weight:bold">int</span> result <span style="color:#000;font-weight:bold">=</span> s<span style="color:#000;font-weight:bold">.</span><span style="color:#008080">length</span><span style="color:#000;font-weight:bold">();</span>
+        yield result<span style="color:#000;font-weight:bold">;</span>
+    <span style="color:#000;font-weight:bold">}</span>
+<span style="color:#000;font-weight:bold">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><ol>
+<li>
+<p>新的switch没有fall-through这个特性了，不用再写一大堆<code>break;</code>不会再遇到由于漏掉某个<code>break;</code>而产生的诡异bug。要知道甚至还有一些教程里有利用fall-through特性的演示代码，这对可读性和可维护性简直就是个灾难！（<a href="https://docs.oracle.com/javase/tutorial/java/nutsandbolts/switch.html">说的就是你</a>）</p>
+</li>
+<li>
+<p>每个case支持了自己的作用域</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">String s <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">switch</span> <span style="color:#000;font-weight:bold">(</span>k<span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+
+    <span style="color:#000;font-weight:bold">case</span>  1 <span style="color:#000;font-weight:bold">-&gt;;</span> <span style="color:#000;font-weight:bold">{</span>
+        String temp <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#34;one&#34;</span><span style="color:#000;font-weight:bold">;</span>
+        yield temp<span style="color:#000;font-weight:bold">;</span>
+    <span style="color:#000;font-weight:bold">}</span>
+    <span style="color:#000;font-weight:bold">case</span>  2 <span style="color:#000;font-weight:bold">-&gt;;</span> <span style="color:#000;font-weight:bold">{</span>
+        String temp <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#34;two&#34;</span><span style="color:#000;font-weight:bold">;</span>
+        yield temp<span style="color:#000;font-weight:bold">;</span>
+    <span style="color:#000;font-weight:bold">}</span>
+    <span style="color:#000;font-weight:bold">default</span> <span style="color:#000;font-weight:bold">-&gt;;</span> <span style="color:#d14">&#34;many&#34;</span><span style="color:#000;font-weight:bold">;</span>
+<span style="color:#000;font-weight:bold">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>支持多个条件合并了，只要用逗号隔开即可</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#000;font-weight:bold">enum</span> Day <span style="color:#000;font-weight:bold">{</span>
+      MONDAY<span style="color:#000;font-weight:bold">,</span> TUESDAY<span style="color:#000;font-weight:bold">,</span> WEDNESDAY<span style="color:#000;font-weight:bold">,</span> THURSDAY<span style="color:#000;font-weight:bold">,</span> FRIDAY<span style="color:#000;font-weight:bold">,</span> SATURDAY<span style="color:#000;font-weight:bold">,</span> SUNDAY
+<span style="color:#000;font-weight:bold">}</span>
+
+Day day <span style="color:#000;font-weight:bold">=</span> Day<span style="color:#000;font-weight:bold">.</span><span style="color:#008080">TUESDAY</span><span style="color:#000;font-weight:bold">;</span>
+<span style="color:#000;font-weight:bold">switch</span> <span style="color:#000;font-weight:bold">(</span>day<span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#000;font-weight:bold">case</span>  MONDAY <span style="color:#000;font-weight:bold">-&amp;</span>gt<span style="color:#000;font-weight:bold">;</span> <span style="color:#d14">&#34;:(&#34;</span><span style="color:#000;font-weight:bold">;</span>
+    <span style="color:#000;font-weight:bold">case</span>  TUESDAY<span style="color:#000;font-weight:bold">,</span> WEDNESDAY<span style="color:#000;font-weight:bold">,</span> THURSDAY <span style="color:#000;font-weight:bold">-&amp;</span>gt<span style="color:#000;font-weight:bold">;</span> <span style="color:#d14">&#34;:|&#34;</span><span style="color:#000;font-weight:bold">;</span>
+    <span style="color:#000;font-weight:bold">case</span>  FRIDAY <span style="color:#000;font-weight:bold">-&amp;</span>gt<span style="color:#000;font-weight:bold">;</span> <span style="color:#d14">&#34;:)&#34;</span><span style="color:#000;font-weight:bold">;</span>
+    <span style="color:#000;font-weight:bold">case</span>  SATURDAY<span style="color:#000;font-weight:bold">,</span> SUNDAY <span style="color:#000;font-weight:bold">-&amp;</span>gt<span style="color:#000;font-weight:bold">;</span> <span style="color:#d14">&#34;:D&#34;</span><span style="color:#000;font-weight:bold">;</span>
+<span style="color:#000;font-weight:bold">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>switch可以当作一个表达式来用了：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#458;font-weight:bold">int</span> k <span style="color:#000;font-weight:bold">=</span> 3<span style="color:#000;font-weight:bold">;</span>
+System<span style="color:#000;font-weight:bold">.</span><span style="color:#008080">out</span><span style="color:#000;font-weight:bold">.</span><span style="color:#008080">println</span><span style="color:#000;font-weight:bold">(</span>
+
+    <span style="color:#000;font-weight:bold">switch</span> <span style="color:#000;font-weight:bold">(</span>k<span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+        <span style="color:#000;font-weight:bold">case</span>  1 <span style="color:#000;font-weight:bold">-&amp;</span>gt<span style="color:#000;font-weight:bold">;</span> <span style="color:#d14">&#34;one&#34;</span><span style="color:#000;font-weight:bold">;</span>
+        <span style="color:#000;font-weight:bold">case</span>  2 <span style="color:#000;font-weight:bold">-&amp;</span>gt<span style="color:#000;font-weight:bold">;</span> <span style="color:#d14">&#34;two&#34;</span><span style="color:#000;font-weight:bold">;</span>
+        <span style="color:#000;font-weight:bold">default</span> <span style="color:#000;font-weight:bold">-&amp;</span>gt<span style="color:#000;font-weight:bold">;</span> <span style="color:#d14">&#34;many&#34;</span><span style="color:#000;font-weight:bold">;</span>
+    <span style="color:#000;font-weight:bold">}</span>
+<span style="color:#000;font-weight:bold">);</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>要求switch语句是exhaustive的，不知道怎么翻译，意思就是对于case类型是字符串或者其他原生类型的，必须要定义default分支。这就进一步在编译阶段消灭了潜在的问题。</p>
+</li>
+</ol>
+<p>之前Java的switch写法一直饱受诟病，在我的实践中，如果不是万不得已，我都是不愿意用switch写分支结构的，经过这次修改之后，在写分支的时候，我甚至会优先考虑是不是可以用switch来写。Java社区对switch的修改，在我看来是非常成功的修改。</p>
+<h2 id="java-15">Java 15</h2>
+<h3 id="jep-378-text-blocks5"><a href="https://openjdk.java.net/jeps/378">JEP 378: Text Blocks</a></h3>
+<p><strong>Java支持了多行字符串：</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">String html <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#34;&#34;&#34;
+</span><span style="color:#d14">          &lt;html&gt;
+</span><span style="color:#d14">            &lt;body&gt;
+</span><span style="color:#d14">              &lt;p&gt;Hello, world&lt;/p&gt;
+</span><span style="color:#d14">            &lt;/body&gt;
+</span><span style="color:#d14">          &lt;/html&gt;
+</span><span style="color:#d14">          &#34;&#34;&#34;</span><span style="color:#000;font-weight:bold">;</span>
+System<span style="color:#000;font-weight:bold">.</span><span style="color:#008080">out</span><span style="color:#000;font-weight:bold">.</span><span style="color:#008080">println</span><span style="color:#000;font-weight:bold">(</span>html<span style="color:#000;font-weight:bold">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>在整理到这个特性的时候，我都有点恍惚，一是因为工作中需要直接写多行字符串的场景不多，另一个是别的语言中基本都支持三引号的多行字符串，Java居然到15才支持？总之，来得晚也比不来强，在一定要手写字符串的场景下，以前的写法明显可读性差远了，可维护性也差远了</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">String html <span style="color:#000;font-weight:bold">=</span> <span style="color:#d14">&#34;&#34;</span><span style="color:#000;font-weight:bold">;</span>
+html <span style="color:#000;font-weight:bold">+=</span> <span style="color:#d14">&#34;&lt;html&gt;\n&#34;</span><span style="color:#000;font-weight:bold">;</span>
+html <span style="color:#000;font-weight:bold">+=</span> <span style="color:#d14">&#34;  &lt;body&gt;\n&#34;</span><span style="color:#000;font-weight:bold">;</span>
+html <span style="color:#000;font-weight:bold">+=</span> <span style="color:#d14">&#34;    &lt;p&gt;Hello, world&lt;/p&gt;\n&#34;</span><span style="color:#000;font-weight:bold">;</span>
+html <span style="color:#000;font-weight:bold">+=</span> <span style="color:#d14">&#34;  &lt;/body&gt;\n&#34;</span><span style="color:#000;font-weight:bold">;</span>
+html <span style="color:#000;font-weight:bold">+=</span> <span style="color:#d14">&#34;&lt;/html&gt;\n&#34;</span><span style="color:#000;font-weight:bold">;</span>
+System<span style="color:#000;font-weight:bold">.</span><span style="color:#008080">out</span><span style="color:#000;font-weight:bold">.</span><span style="color:#008080">println</span><span style="color:#000;font-weight:bold">(</span>html<span style="color:#000;font-weight:bold">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><a href="https://bugs.openjdk.java.net/browse/JDK-8233014">Enable ShowCodeDetailsInExceptionMessages by default</a></p>
+<p><strong>简单的说，NPE的报错会变成这样</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Exception in thread <span style="color:#d14">&#34;main&#34;</span> java<span style="color:#000;font-weight:bold">.</span><span style="color:#008080">lang</span><span style="color:#000;font-weight:bold">.</span><span style="color:#008080">NullPointerException</span><span style="color:#000;font-weight:bold">:</span>
+  Cannot invoke <span style="color:#d14">&#34;org.w3c.dom.Node.getChildNodes()&#34;</span> because
+  the <span style="color:#000;font-weight:bold">return</span> value of <span style="color:#d14">&#34;org.w3c.dom.NodeList.item(int)&#34;</span> is <span style="color:#000;font-weight:bold">null</span>
+        at Unlucky<span style="color:#000;font-weight:bold">.</span><span style="color:#008080">method</span><span style="color:#000;font-weight:bold">(</span>Unlucky<span style="color:#000;font-weight:bold">.</span><span style="color:#008080">java</span><span style="color:#000;font-weight:bold">:</span>83<span style="color:#000;font-weight:bold">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这简直是福音，又是一个我特别喜欢的改动，NPE有可能是每个Java开发者碰到最多的问题了…之前出现的时候，排查还是挺难的，不熟悉代码的情况下甚至需要一个一个去试。现在报错就直接告诉你了，真的很棒</p>
+<h2 id="为什么怀念写java">为什么怀念写Java</h2>
+<ol>
+<li>准确的说不是怀念写Java，更准确的说法是怀念读Java。实际上写起来爽的话，go写起来确实很爽…但是工作中并不是只要写代码，我发现工作的重心越来越多的转移到读代码、改代码，不过是同事的代码还是开源项目，读代码的时候就会发现读Java的代码有多么轻松，写的时候的那些麻烦，读的时候都变成了贴心的提示。</li>
+<li>怀念Java强大的IDE（IDEA），对比写JavaScript和TS的时候，总是有一种心虚的感觉，代码不跑一跑心里就没底…</li>
+<li>因为死板，奇淫巧技就少，碰上一群喜欢“炫技”又追求“</li>
+<li>Self-documenting code”（指不写注释）的同事，你就知道我在说什么了…</li>
+</ol>
+<p>总之，Java确实进步慢，确实老，但显然Java社区知道要往哪里走，绝大多数改动都改在心坎里，让人受用。甚至我认为作为一个技术人员，也要学会“扬长避短”，不要盲目求新，打好基础，认清自己的方向更加的重要。</p>
+        </div>
+
+        
+<div class="post-archive">
+    <ul class="post-copyright">
+        <li><strong>原文作者：</strong><a rel="author" href="http://oddcc.github.io/">oddcc</a></li>
+        <li style="word-break:break-all"><strong>原文链接：</strong><a href="http://oddcc.github.io/2020/11/%E6%8E%A5%E8%A7%A6%E4%BA%86%E4%B8%80%E4%BA%9B%E6%96%B0%E8%AF%AD%E8%A8%80%E5%90%8E%EF%BC%8C%E5%9B%9E%E5%A4%B4%E7%9C%8Bjava-8%E4%B9%8B%E5%90%8E%E7%9A%84%E6%9B%B4%E6%96%B0/">http://oddcc.github.io/2020/11/%E6%8E%A5%E8%A7%A6%E4%BA%86%E4%B8%80%E4%BA%9B%E6%96%B0%E8%AF%AD%E8%A8%80%E5%90%8E%EF%BC%8C%E5%9B%9E%E5%A4%B4%E7%9C%8Bjava-8%E4%B9%8B%E5%90%8E%E7%9A%84%E6%9B%B4%E6%96%B0/</a></li>
+        <li><strong>版权声明：</strong>本作品采用<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可，非商业转载请注明出处（作者，原文链接），商业转载请联系作者获得授权。</li>
+    </ul>
+</div>
+<br/>
+
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/2020/11/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%A2%AB%E8%BF%AB%E5%8F%82%E5%8A%A0%E5%BC%80%E6%BA%90%E7%9A%84%E7%BB%8F%E5%8E%86/">记一次被迫参加开源的经历</a></li>
+        
+        <li><a href="/2020/08/%E8%AE%B0%E4%B8%80%E6%AC%A1-xbox-one-%E6%89%8B%E6%9F%84%E7%9A%84%E5%A4%8D%E6%B4%BB/">记一次 Xbox One 手柄的复活</a></li>
+        
+        <li><a href="/2020/07/%E5%A6%82%E4%BD%95%E5%9C%A8%E6%96%B0%E7%94%B5%E8%84%91%E4%B8%8A%E7%8E%A9%E9%82%A3%E4%BA%9B%E4%BD%8E%E5%88%86%E8%BE%A8%E7%8E%87%E7%9A%84%E8%80%81%E6%B8%B8%E6%88%8F%EF%BC%9F/">如何在新电脑上玩那些低分辨率的老游戏？</a></li>
+        
+        <li><a href="/2020/07/java-%E5%AF%B9%E8%B1%A1%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E6%98%AF%E5%A6%82%E4%BD%95%E8%A1%A8%E7%A4%BA%E7%9A%84/">Java 对象在内存中是如何表示的</a></li>
+        
+        <li><a href="/2020/04/shell-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">Shell 快速上手</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            没有标签
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2021 <a href="http://oddcc.github.io/">CodeTalk By oddcc</a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.2.8/raphael.min.js" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/flowchart/1.12.2/flowchart.min.js" crossorigin="anonymous"></script>
+        <script>(function () {
+                if (!window.flowchart) return;
+                const blocks = document.querySelectorAll('pre code.language-flowchart, pre code.language-flow');
+                for (let i = 0; i < blocks.length; i++) {
+                    const block = blocks[i];
+                    const rootElement = block.parentNode;
+                    const container = document.createElement('div');
+                    const id = `js-flowchart-diagrams-${i}`;
+                    container.id = id;
+                    container.className = 'align-center';
+                    container.setAttribute("style", "overFlow-x:auto");
+                    rootElement.parentNode.replaceChild(container, rootElement);
+                    const diagram = flowchart.parse(block.childNodes[0].nodeValue);
+                    diagram.drawSVG(id, window.flowchartDiagramsOptions ? window.flowchartDiagramsOptions : {});
+                }
+            })();
+        </script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/snap.svg/0.5.1/snap.svg-min.js" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/js-sequence-diagrams/1.0.6/sequence-diagram-min.js" crossorigin="anonymous"></script>
+        <script>(function () {
+            if (!window.Diagram) return;
+            const blocks = document.querySelectorAll('pre code.language-sequence');
+            for (let i = 0; i < blocks.length; i++) {
+                const block = blocks[i];
+                
+                const rootElement = block.parentNode;
+                const container = document.createElement('div');
+                const id = `js-sequence-diag-${i}`;
+                container.id = id;
+                container.className = 'align-center';
+                container.setAttribute("style", "overFlow-x:auto");
+                rootElement.parentNode.replaceChild(container, rootElement);
+
+                const diagram = Diagram.parse(block.childNodes[0].nodeValue);
+                diagram.drawSVG(id, window.sequenceDiagramsOptions
+                    ? window.sequenceDiagramsOptions
+                    : { theme: 'simple' });
+            }
+        })();
+        </script><script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='http://oddcc.github.io/search/' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="http://oddcc.github.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="http://oddcc.github.io/2020/12/gilab-runner%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89/" title="gilab-runner源码阅读记录（一）">gilab-runner源码阅读记录（一）</a>
+    </li>
+    
+    <li>
+        <a href="http://oddcc.github.io/2020/12/%E5%A8%81%E8%81%94%E9%80%9A-453bmini-%E9%9D%99%E6%80%81%E5%8D%B7%E6%89%A9%E5%AE%B9%E8%AE%B0%E5%BD%95/" title="威联通 453Bmini 静态卷扩容记录">威联通 453Bmini 静态卷扩容记录</a>
+    </li>
+    
+    <li>
+        <a href="http://oddcc.github.io/2020/11/%E6%8E%A5%E8%A7%A6%E4%BA%86%E4%B8%80%E4%BA%9B%E6%96%B0%E8%AF%AD%E8%A8%80%E5%90%8E%EF%BC%8C%E5%9B%9E%E5%A4%B4%E7%9C%8Bjava-8%E4%B9%8B%E5%90%8E%E7%9A%84%E6%9B%B4%E6%96%B0/" title="接触了一些新语言后，回头看Java 8之后的更新">接触了一些新语言后，回头看Java 8之后的更新</a>
+    </li>
+    
+    <li>
+        <a href="http://oddcc.github.io/2020/11/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%A2%AB%E8%BF%AB%E5%8F%82%E5%8A%A0%E5%BC%80%E6%BA%90%E7%9A%84%E7%BB%8F%E5%8E%86/" title="记一次被迫参加开源的经历">记一次被迫参加开源的经历</a>
+    </li>
+    
+    <li>
+        <a href="http://oddcc.github.io/2020/08/%E8%AE%B0%E4%B8%80%E6%AC%A1-xbox-one-%E6%89%8B%E6%9F%84%E7%9A%84%E5%A4%8D%E6%B4%BB/" title="记一次 Xbox One 手柄的复活">记一次 Xbox One 手柄的复活</a>
+    </li>
+    
+    <li>
+        <a href="http://oddcc.github.io/2020/07/%E5%A6%82%E4%BD%95%E5%9C%A8%E6%96%B0%E7%94%B5%E8%84%91%E4%B8%8A%E7%8E%A9%E9%82%A3%E4%BA%9B%E4%BD%8E%E5%88%86%E8%BE%A8%E7%8E%87%E7%9A%84%E8%80%81%E6%B8%B8%E6%88%8F%EF%BC%9F/" title="如何在新电脑上玩那些低分辨率的老游戏？">如何在新电脑上玩那些低分辨率的老游戏？</a>
+    </li>
+    
+    <li>
+        <a href="http://oddcc.github.io/2020/07/java-%E5%AF%B9%E8%B1%A1%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E6%98%AF%E5%A6%82%E4%BD%95%E8%A1%A8%E7%A4%BA%E7%9A%84/" title="Java 对象在内存中是如何表示的">Java 对象在内存中是如何表示的</a>
+    </li>
+    
+    <li>
+        <a href="http://oddcc.github.io/2020/04/shell-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/" title="Shell 快速上手">Shell 快速上手</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+    <li><a href="http://oddcc.github.io/categories/AWS/">AWS (1)</a></li>
+    
+    <li><a href="http://oddcc.github.io/categories/Fool-Around/">Fool Around (4)</a></li>
+    
+    <li><a href="http://oddcc.github.io/categories/Golang/">Golang (2)</a></li>
+    
+    <li><a href="http://oddcc.github.io/categories/Java/">Java (2)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="http://oddcc.github.io/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
