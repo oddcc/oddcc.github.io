@@ -17,7 +17,7 @@ localSearch = true # 启用本地搜索
 subtitle = "记录，思考，分享" 
 toc = true # 是否开启目录
 [params.image_cdn]
-Host = "https://cdn.jsdelivr.net/gh/oddcc/oddcc.github.io"
+Host = "https://cdn.jsdelivr.net/gh/oddcc/oddcc.github.io@gh-pages"
 enable = true
 [params.cc]
 link = "https://creativecommons.org/licenses/by-nc-nd/4.0/"
