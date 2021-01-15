@@ -1,29 +1,19 @@
 baseURL = "http://blog.chenhq.ren/"
-languageCode = "en-us"
-theme = "maupassant"
-title = "CodeTalk"
-
 disablePathToLower = true
+googleAnalytics = "G-625HZ9EYG4"
 hasCJKLanguage = true
+languageCode = "en-us"
 preserveTaxonomyNames = true
 summaryLength = 140
+theme = "maupassant"
+title = "CodeTalk"
 [author]
 name = "oddcc"
 [params]
-author = "oddcc"
-keywords = "golang,go语言,oddcc,java,博客"
-subtitle = "记录，思考，分享"
-#   busuanzi = true #启用不算子网页统计
-#   googleAd = ""  #ca-pub-xxxxxxxxxxxxxx
+author = "oddcc" 
+keywords = "golang,go语言,oddcc,java,博客" 
 localSearch = true # 启用本地搜索
-
-# 这里我存放在了主题的static文件夹里，根目录的似乎也可以
-#   customCSS = ['douban.css', 'other.css']
-# if ['custom.css'], load '/static/css/custom.css' file
-#   customJS = ['douban.js']
-# if ['custom.js'], load '/static/js/custom.js' file
-
-# 全局开关，你也可以在每一篇内容的 front matter 中针对单篇内容关闭或开启某些功能
+subtitle = "记录，思考，分享" 
 toc = true # 是否开启目录
 [params.cc]
 link = "https://creativecommons.org/licenses/by-nc-nd/4.0/"
@@ -43,9 +33,7 @@ theme = "github-light" # 样式主题，有github-light和github-dark两种
 [markup.highlight]
 lineNos = true
 style = "github"
-
 [menu]
-
 [[menu.main]]
 identifier = "archives"
 name = "归档"
