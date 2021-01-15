@@ -34,7 +34,11 @@ options = "" # default: "{theme: 'simple'}"
 [params.flowchartDiagrams]
 enable = true
 options = ""
-
+[params.utteranc]
+enable = true 
+issueTerm = "title" #表示你选择以那种方式让github issue的评论和你的文章关联。
+repo = "oddcc/oddcc.github.io" # 存储评论的Repo，格式为 owner/repo
+theme = "github-light" # 样式主题，有github-light和github-dark两种
 [markup]
 [markup.highlight]
 lineNos = true
