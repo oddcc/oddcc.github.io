@@ -1,6 +1,6 @@
 baseURL = "http://blog.chenhq.ren/"
 disablePathToLower = true
-googleAnalytics = "G-625HZ9EYG4"
+googleAnalytics = "UA-132232639-1"
 hasCJKLanguage = true
 languageCode = "en-us"
 preserveTaxonomyNames = true
