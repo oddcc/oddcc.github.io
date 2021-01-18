@@ -6,22 +6,22 @@
     <description>Recent content in Categories on CodeTalk</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 23 Dec 2020 08:21:09 +0000</lastBuildDate><atom:link href="http://blog.chenhq.ren/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 18 Jan 2021 15:32:30 +0800</lastBuildDate><atom:link href="http://blog.chenhq.ren/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Fool Around</title>
+      <link>http://blog.chenhq.ren/categories/Fool-Around/</link>
+      <pubDate>Mon, 18 Jan 2021 15:32:30 +0800</pubDate>
+      
+      <guid>http://blog.chenhq.ren/categories/Fool-Around/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Golang</title>
       <link>http://blog.chenhq.ren/categories/Golang/</link>
       <pubDate>Wed, 23 Dec 2020 08:21:09 +0000</pubDate>
       
       <guid>http://blog.chenhq.ren/categories/Golang/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Fool Around</title>
-      <link>http://blog.chenhq.ren/categories/Fool-Around/</link>
-      <pubDate>Thu, 10 Dec 2020 03:25:10 +0000</pubDate>
-      
-      <guid>http://blog.chenhq.ren/categories/Fool-Around/</guid>
       <description></description>
     </item>
     

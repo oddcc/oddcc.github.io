@@ -6,7 +6,16 @@
     <description>Recent content in Fool Around on CodeTalk</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 10 Dec 2020 03:25:10 +0000</lastBuildDate><atom:link href="http://blog.chenhq.ren/categories/Fool-Around/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 18 Jan 2021 15:32:30 +0800</lastBuildDate><atom:link href="http://blog.chenhq.ren/categories/Fool-Around/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>WH-1000XM3通过NFC连接到iPhone</title>
+      <link>http://blog.chenhq.ren/2021/01/WH-1000XM3%E9%80%9A%E8%BF%87NFC%E8%BF%9E%E6%8E%A5%E5%88%B0iPhone/</link>
+      <pubDate>Mon, 18 Jan 2021 15:32:30 +0800</pubDate>
+      
+      <guid>http://blog.chenhq.ren/2021/01/WH-1000XM3%E9%80%9A%E8%BF%87NFC%E8%BF%9E%E6%8E%A5%E5%88%B0iPhone/</guid>
+      <description>WH-1000X M3跟安卓手机配合是很好的，比如我的小米8，只要非锁屏状态下靠近NFC区域，就可以自动连接耳机。自从变成双机党（还有一台iPhone SE2）之后，多设备切换就成了问题，在发现本文的方法之前，最快的方式是 安卓打开蓝牙菜单，点WH-1000X M3断开当前连接 ios打开蓝牙菜单，点W</description>
+    </item>
+    
     <item>
       <title>威联通 453Bmini 静态卷扩容记录</title>
       <link>http://blog.chenhq.ren/2020/12/%E5%A8%81%E8%81%94%E9%80%9A-453bmini-%E9%9D%99%E6%80%81%E5%8D%B7%E6%89%A9%E5%AE%B9%E8%AE%B0%E5%BD%95/</link>
