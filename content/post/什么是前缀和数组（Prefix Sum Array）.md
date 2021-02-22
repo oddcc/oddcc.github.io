@@ -3,7 +3,7 @@ title: "什么是前缀和数组（Prefix Sum Array）"
 date: 2021-02-22T17:48:15+08:00
 author: oddcc
 type: post
-url: 什么是前缀和数组（Prefix Sum Array）/
+url: /2021/02/什么是前缀和数组（Prefix Sum Array）/
 categories:
   - Algorithm
 ---
