@@ -7,21 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 
-    <title>Golang | CodeTalk</title>
-    <meta property="og:title" content="Golang - CodeTalk">
+    <title>Algorithm | CodeTalk</title>
+    <meta property="og:title" content="Algorithm - CodeTalk">
     <meta property="og:type" content="article">
         
         
     <meta name="Keywords" content="golang,go语言,oddcc,java,博客">
-    <meta name="description" content="Golang">
+    <meta name="description" content="Algorithm">
         
     <meta name="author" content="oddcc">
-    <meta property="og:url" content="http://blog.chenhq.ren/categories/Golang/">
+    <meta property="og:url" content="http://blog.chenhq.ren/categories/Algorithm/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml+xml" href="http://blog.chenhq.ren/categories/Golang/index.xml" title="CodeTalk" />
+    <link rel="alternate" type="application/rss+xml+xml" href="http://blog.chenhq.ren/categories/Algorithm/index.xml" title="CodeTalk" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -69,7 +69,7 @@
     
     <h3 class="archive-title">
         分类
-        <span class="keyword">Golang</span>
+        <span class="keyword">Algorithm</span>
         中的文章
     </h3>
     
@@ -78,57 +78,23 @@
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="http://blog.chenhq.ren/2020/12/gilab-runner%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89/">gilab-runner源码阅读记录（一）</a>
+                <a href="http://blog.chenhq.ren/2021/02/%E4%BB%80%E4%B9%88%E6%98%AF%E5%B7%AE%E5%88%86%E6%95%B0%E7%BB%84%EF%BC%88difference%20Array%EF%BC%89/">什么是差分数组（difference Array）</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2020年12月23日
+            2021年2月22日
         </date>
         
         <div class="post-meta meta-category">
             |
             
-            <a href='/categories/Golang'>Golang</a>
+            <a href='/categories/Algorithm'>Algorithm</a>
             
         </div>
         
         <div class="post-content">
-            <h2 id="背景">背景</h2>
-<p>接之前的文章，单纯把整个流程调通了上到生产环境发现还是不满足所有需求。比如：</p>
-<ol>
-<li>不支持指定多个subnet和instance-type，导致的结果就是如果指定了subnet和instance-type，就只能在一个zone中请求spot实例，经常会出现没有相关资源的情况（capacity-not-available）。这时候所有CI请求就被block住了，因为没有新的机器可以运行，只能等已有任务跑完，复用已有的机器</li>
-<li>既然是为了节省成本，当然选比较低配的机型，只要能跑通CI即可。但是有一些项目需要的资源是比较高的，我们选的机型是2C2G的机型，某些项目跑CI就会出现OOM（out of memory）的情况。</li>
-</ol>……
-            <p class="readmore"><a href="http://blog.chenhq.ren/2020/12/gilab-runner%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89/">阅读全文</a></p>
-        </div>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="http://blog.chenhq.ren/2020/11/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%A2%AB%E8%BF%AB%E5%8F%82%E5%8A%A0%E5%BC%80%E6%BA%90%E7%9A%84%E7%BB%8F%E5%8E%86/">记一次被迫参加开源的经历</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2020年11月25日
-        </date>
-        
-        <div class="post-meta meta-category">
-            |
-            
-            <a href='/categories/AWS'>AWS</a>
-            
-            <a href='/categories/Golang'>Golang</a>
-            
-        </div>
-        
-        <div class="post-content">
-            <p>公司的CI目前是在固定的几台机器上跑，有几个问题，一个是没有伸缩性，高峰期时甚至有CI等到过期了都没排到机器；另一个是空闲时又要浪费不小的运营成本，毕竟机器开在那里就扣费的。</p>
-<p>出于节省公司运营成本的考虑，决定把跑CI的机器由固定配置改成可伸缩的，由于代码管理是在自建的gitlab上面，云服务使用的是AWS，所以调研了几个方案</p>
-<ol>
-<li>利用AWS Fargate实现（<a href="https://docs.gitlab.com/runner/configuration/runner_autoscale_aws/">官方文档</a>），但Fargate有自己的限制，即不支持Docker-in-Docker，所以只能跑一些简单的CI。我们的发版操作也是用CI跑的，所以官方的方式不行。</li>
-</ol>……
-            <p class="readmore"><a href="http://blog.chenhq.ren/2020/11/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%A2%AB%E8%BF%AB%E5%8F%82%E5%8A%A0%E5%BC%80%E6%BA%90%E7%9A%84%E7%BB%8F%E5%8E%86/">阅读全文</a></p>
+            遇到的问题 有一个数组arr，我们需要频繁对arr中的子数组进行更新，比如为子数组的元素+1，容易想到的办法是每次都用一个循环进行更新，但这其实是个时间复杂度O(N)的操作，效率是不高的。有没有什么办法可以高效的进行更新（比如O(1)的时间复杂度）？ 什么是差分数组？ 如果我们有个数组……
+            <p class="readmore"><a href="http://blog.chenhq.ren/2021/02/%E4%BB%80%E4%B9%88%E6%98%AF%E5%B7%AE%E5%88%86%E6%95%B0%E7%BB%84%EF%BC%88difference%20Array%EF%BC%89/">阅读全文</a></p>
         </div>
     </article>
     
