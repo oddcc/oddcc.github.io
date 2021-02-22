@@ -7,21 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 
-    <title>AWS | CodeTalk</title>
-    <meta property="og:title" content="AWS - CodeTalk">
+    <title>Posts | CodeTalk</title>
+    <meta property="og:title" content="Posts - CodeTalk">
     <meta property="og:type" content="article">
         
         
     <meta name="Keywords" content="golang,go语言,oddcc,java,博客">
-    <meta name="description" content="AWS">
+    <meta name="description" content="Posts">
         
     <meta name="author" content="oddcc">
-    <meta property="og:url" content="http://blog.chenhq.ren/categories/AWS/">
+    <meta property="og:url" content="http://blog.chenhq.ren/post/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml+xml" href="http://blog.chenhq.ren/categories/AWS/index.xml" title="CodeTalk" />
+    <link rel="alternate" type="application/rss+xml+xml" href="http://blog.chenhq.ren/post/index.xml" title="CodeTalk" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -49,7 +49,7 @@
             </div>
             <div>
                 <nav id="nav-menu" class="clearfix">
-                    <a class="" href="http://blog.chenhq.ren/">首页</a>
+                    <a class="current" href="http://blog.chenhq.ren/">首页</a>
                     
                     <a  href="http://blog.chenhq.ren/archives/" title="归档">归档</a>
                     
@@ -67,47 +67,56 @@
                     
 <div class="res-cons">
     
-    <h3 class="archive-title">
-        分类
-        <span class="keyword">AWS</span>
-        中的文章
-    </h3>
-    
-
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="http://blog.chenhq.ren/2020/11/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%A2%AB%E8%BF%AB%E5%8F%82%E5%8A%A0%E5%BC%80%E6%BA%90%E7%9A%84%E7%BB%8F%E5%8E%86/">记一次被迫参加开源的经历</a>
+                <a href="http://blog.chenhq.ren/2020/04/shell-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/" title="Shell 快速上手">Shell 快速上手</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2020年11月25日
+            2020年4月1日
         </date>
         
-        <div class="post-meta meta-category">
-            |
+        <div class="post-meta">
+            <span>|</span>
             
-            <a href='/categories/AWS'>AWS</a>
-            
-            <a href='/categories/Golang'>Golang</a>
+            <span class="meta-category"><a href='/categories/Fool-Around'>Fool Around</a></span>
             
         </div>
         
         <div class="post-content">
-            <p>公司的CI目前是在固定的几台机器上跑，有几个问题，一个是没有伸缩性，高峰期时甚至有CI等到过期了都没排到机器；另一个是空闲时又要浪费不小的运营成本，毕竟机器开在那里就扣费的。</p>
-<p>出于节省公司运营成本的考虑，决定把跑CI的机器由固定配置改成可伸缩的，由于代码管理是在自建的gitlab上面，云服务使用的是AWS，所以调研了几个方案</p>
-<ol>
-<li>利用AWS Fargate实现（<a href="https://docs.gitlab.com/runner/configuration/runner_autoscale_aws/">官方文档</a>），但Fargate有自己的限制，即不支持Docker-in-Docker，所以只能跑一些简单的CI。我们的发版操作也是用CI跑的，所以官方的方式不行。</li>
-</ol>……
-            <p class="readmore"><a href="http://blog.chenhq.ren/2020/11/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%A2%AB%E8%BF%AB%E5%8F%82%E5%8A%A0%E5%BC%80%E6%BA%90%E7%9A%84%E7%BB%8F%E5%8E%86/">阅读全文</a></p>
+            <h2 id="什么是shell">什么是Shell？</h2>
+<p>现代的电脑可以以很多种方式跟人进行交互，如图形界面，语音，甚至AR/VR都可以实现交互。使用这些方式已经可以满足绝大部分的用户需求了，但是使用这些交互方式，我们的行为依然是受限的。我们使用的是已经被定义好的功能的集合，以图形界面来说，每一个按钮的行为都是已经被编写图形界面的程序员写好的，我们没法通过图形界面做到没有被定义过的行为。</p>
+<p>这就意味着始终有一些功能，电脑是可以做到的，但是我们却无法通过图形界面等方式告诉电脑做这些事情。但利用 shell 则不同，通过 shell，我们可以利用电脑提供的所有功能。</p>……
         </div>
+        <p class="readmore"><a href="http://blog.chenhq.ren/2020/04/shell-%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/">阅读全文</a></p>
     </article>
     
-
+    
     
 
 
+
+<ol class="page-navigator">
+    
+    <li class="prev">
+        <a href="http://blog.chenhq.ren/post/">上一页</a>
+    </li>
+    
+
+    
+    <li >
+        <a href="http://blog.chenhq.ren/post/">1</a>
+    </li>
+    
+    <li  class="current">
+        <a href="http://blog.chenhq.ren/post/page/2/">2</a>
+    </li>
+    
+
+    
+</ol>
 
 
 

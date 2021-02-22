@@ -7,20 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 
-    <title>WH-1000XM3通过NFC连接到iPhone | CodeTalk</title>
-    <meta property="og:title" content="WH-1000XM3通过NFC连接到iPhone - CodeTalk">
+    <title>什么是前缀和数组（Prefix Sum Array） | CodeTalk</title>
+    <meta property="og:title" content="什么是前缀和数组（Prefix Sum Array） - CodeTalk">
     <meta property="og:type" content="article">
         
-    <meta property="article:published_time" content='2021-01-18T15:32:30&#43;08:00'>
+    <meta property="article:published_time" content='2021-02-22T17:48:15&#43;08:00'>
         
         
-    <meta property="article:modified_time" content='2021-01-18T15:32:30&#43;08:00'>
+    <meta property="article:modified_time" content='2021-02-22T17:48:15&#43;08:00'>
         
     <meta name="Keywords" content="golang,go语言,oddcc,java,博客">
-    <meta name="description" content="WH-1000XM3通过NFC连接到iPhone">
+    <meta name="description" content="什么是前缀和数组（Prefix Sum Array）">
         <meta name="author" content="oddcc">
         
-    <meta property="og:url" content="http://blog.chenhq.ren/2021/01/WH-1000XM3%E9%80%9A%E8%BF%87NFC%E8%BF%9E%E6%8E%A5%E5%88%B0iPhone/">
+    <meta property="og:url" content="http://blog.chenhq.ren/2021/02/%E4%BB%80%E4%B9%88%E6%98%AF%E5%89%8D%E7%BC%80%E5%92%8C%E6%95%B0%E7%BB%84%EF%BC%88Prefix%20Sum%20Array%EF%BC%89/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
@@ -133,7 +133,13 @@
 <div class="post-toc" style="position: absolute; top: 188px;">
     <h2 class="post-toc-title">文章目录</h2>
     <div class="post-toc-content">
-        <nav id="TableOfContents"></nav>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#遇到的问题">遇到的问题</a></li>
+    <li><a href="#什么是前缀和数组">什么是前缀和数组</a></li>
+    <li><a href="#用法">用法</a></li>
+  </ul>
+</nav>
     </div>
 </div>
 <script type="text/javascript">
@@ -165,49 +171,50 @@
 </script>
     <article class="post">
         <header>
-            <h1 class="post-title">WH-1000XM3通过NFC连接到iPhone</h1>
+            <h1 class="post-title">什么是前缀和数组（Prefix Sum Array）</h1>
         </header>
         <date class="post-meta meta-date">
-            2021年1月18日
+            2021年2月22日
         </date>
         
         <div class="post-meta">
             <span>|</span>
             
-            <span class="meta-category"><a href='/categories/Fool-Around'>Fool Around</a></span>
+            <span class="meta-category"><a href='/categories/Algorithm'>Algorithm</a></span>
             
         </div>
         
         
         
         <div class="post-content">
-            <p>WH-1000X M3跟安卓手机配合是很好的，比如我的小米8，只要非锁屏状态下靠近NFC区域，就可以自动连接耳机。自从变成双机党（还有一台iPhone SE2）之后，多设备切换就成了问题，在发现本文的方法之前，最快的方式是</p>
-<ol>
-<li>安卓打开蓝牙菜单，点WH-1000X M3断开当前连接</li>
-<li>ios打开蓝牙菜单，点WH-1000X M3连接</li>
-</ol>
-<p>或者是直接长按电源关闭WH-1000X M3，再长按进入配对模式，直接在ios上连接。</p>
-<p>显然看上去就非常麻烦…</p>
-<p>然后我看到了这篇文章：<a href="https://sspai.com/post/56974">利用快捷指令连接Sony耳机</a>，受到了启发，原来shortcut还能这么玩呢？但是文章中提到的shortcut，逻辑是检测到NFC之后，打开蓝牙菜单，然后还是要手动连接。这显然还是很麻烦，跟安卓的体验依然差着一大截。</p>
-<p>总之，经过摸索，ios是可以实现直接扫描NFC连接到耳机的，全程不用手动确认之类的操作。</p>
-<p>
-
-
-
-
-
-<img class="img-fluid" src="/images/WH-1000XM3%e9%80%9a%e8%bf%87NFC%e8%bf%9e%e6%8e%a5%e5%88%b0iPhone/%e6%8d%b7%e5%be%84%e6%88%aa%e5%9b%be.jpeg" alt='捷径截图' />
-</p>
-<p>完整的脚本就是上面这个样子了，需要注意的是<code>Set playback destination to</code>这一步在设置时，需要耳机已经连接到手机了，不然你是找不到对应的设备的。</p>
-<p>至此，ios的体验跟安卓已经不相上下了，甚至更胜一筹（安卓连接手机不会震动），美中不足的是连接时会报找不到设备的错误，不过实际上不影响使用。</p>
-
+            <h2 id="遇到的问题">遇到的问题</h2>
+<p>如果有数组<code>arr</code></p>
+<pre><code>       0  1  2  3  4  5  6
+arr -&gt; 2  5  4  9  7  1  0
+</code></pre><p>我们需要频繁的求任意子数组的元素的和，应该如何求解？最容易想到的就是循环求和，但这是个<code>O(N)</code>的操作。有没有什么办法可以让我们可以用<code>O(1)</code>的时间复杂度来得到子数组的和？</p>
+<h2 id="什么是前缀和数组">什么是前缀和数组</h2>
+<p>如果对于数组arr，我们有如下的数组preSum，满足</p>
+<blockquote>
+<p>preSum[0] = arr[0]</p>
+<p>preSum[1] = arr[0] + arr[1]</p>
+<p>preSum[2] = arr[0] + arr[1] + arr[2]</p>
+<p>&hellip;</p>
+<p>preSum[n] = arr[0] + &hellip; + arr[n]</p>
+</blockquote>
+<p>那么preSum就是一个前缀和数组，实际应用中，我们可以通过<code>preSum[0] = arr[0]</code>和<code>preSum[i] = preSum[i - 1] + arr[i]</code>来方便的得到前缀和数组。</p>
+<h2 id="用法">用法</h2>
+<p>回到最初的问题，如果我们要求[2,4]的子数组的和是多少，我们可以利用<code>preSum[4] - preSum[2 - 1] == 27 - 7 == 20</code>来方便的求得，从而把一个<code>O(N)</code>的操作转为<code>O(1)</code>的操作，而构造前缀和数组是一个<code>O(N)</code>的操作</p>
+<pre><code>          0  1  2  3  4  5  6
+arr    -&gt; 2  5  4  9  7  1  0
+preSum -&gt; 2  7 11 20 27 28 28
+</code></pre>
         </div>
 
         
 <div class="post-archive">
     <ul class="post-copyright">
         <li><strong>原文作者：</strong><a rel="author" href="http://blog.chenhq.ren/">oddcc</a></li>
-        <li style="word-break:break-all"><strong>原文链接：</strong><a href="http://blog.chenhq.ren/2021/01/WH-1000XM3%E9%80%9A%E8%BF%87NFC%E8%BF%9E%E6%8E%A5%E5%88%B0iPhone/">http://blog.chenhq.ren/2021/01/WH-1000XM3%E9%80%9A%E8%BF%87NFC%E8%BF%9E%E6%8E%A5%E5%88%B0iPhone/</a></li>
+        <li style="word-break:break-all"><strong>原文链接：</strong><a href="http://blog.chenhq.ren/2021/02/%E4%BB%80%E4%B9%88%E6%98%AF%E5%89%8D%E7%BC%80%E5%92%8C%E6%95%B0%E7%BB%84%EF%BC%88Prefix%20Sum%20Array%EF%BC%89/">http://blog.chenhq.ren/2021/02/%E4%BB%80%E4%B9%88%E6%98%AF%E5%89%8D%E7%BC%80%E5%92%8C%E6%95%B0%E7%BB%84%EF%BC%88Prefix%20Sum%20Array%EF%BC%89/</a></li>
         <li><strong>版权声明：</strong>本作品采用<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可，非商业转载请注明出处（作者，原文链接），商业转载请联系作者获得授权。</li>
     </ul>
 </div>
@@ -221,15 +228,15 @@
     <h2>See Also</h2>
     <ul class="listing">
         
+        <li><a href="/2021/02/%E4%BB%80%E4%B9%88%E6%98%AF%E5%B7%AE%E5%88%86%E6%95%B0%E7%BB%84%EF%BC%88difference%20Array%EF%BC%89/">什么是差分数组（difference Array）</a></li>
+        
+        <li><a href="/2021/01/WH-1000XM3%E9%80%9A%E8%BF%87NFC%E8%BF%9E%E6%8E%A5%E5%88%B0iPhone/">WH-1000XM3通过NFC连接到iPhone</a></li>
+        
         <li><a href="/2020/12/gilab-runner%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89/">gilab-runner源码阅读记录（一）</a></li>
         
         <li><a href="/2020/12/%E5%A8%81%E8%81%94%E9%80%9A-453bmini-%E9%9D%99%E6%80%81%E5%8D%B7%E6%89%A9%E5%AE%B9%E8%AE%B0%E5%BD%95/">威联通 453Bmini 静态卷扩容记录</a></li>
         
         <li><a href="/2020/11/%E6%8E%A5%E8%A7%A6%E4%BA%86%E4%B8%80%E4%BA%9B%E6%96%B0%E8%AF%AD%E8%A8%80%E5%90%8E%EF%BC%8C%E5%9B%9E%E5%A4%B4%E7%9C%8Bjava-8%E4%B9%8B%E5%90%8E%E7%9A%84%E6%9B%B4%E6%96%B0/">接触了一些新语言后，回头看Java 8之后的更新</a></li>
-        
-        <li><a href="/2020/11/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%A2%AB%E8%BF%AB%E5%8F%82%E5%8A%A0%E5%BC%80%E6%BA%90%E7%9A%84%E7%BB%8F%E5%8E%86/">记一次被迫参加开源的经历</a></li>
-        
-        <li><a href="/2020/08/%E8%AE%B0%E4%B8%80%E6%AC%A1-xbox-one-%E6%89%8B%E6%9F%84%E7%9A%84%E5%A4%8D%E6%B4%BB/">记一次 Xbox One 手柄的复活</a></li>
         
     </ul>
 </div>

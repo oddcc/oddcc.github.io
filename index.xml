@@ -6,7 +6,16 @@
     <description>Recent content on CodeTalk</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 22 Feb 2021 17:09:54 +0800</lastBuildDate><atom:link href="http://blog.chenhq.ren/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 22 Feb 2021 17:48:15 +0800</lastBuildDate><atom:link href="http://blog.chenhq.ren/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>什么是前缀和数组（Prefix Sum Array）</title>
+      <link>http://blog.chenhq.ren/2021/02/%E4%BB%80%E4%B9%88%E6%98%AF%E5%89%8D%E7%BC%80%E5%92%8C%E6%95%B0%E7%BB%84%EF%BC%88Prefix%20Sum%20Array%EF%BC%89/</link>
+      <pubDate>Mon, 22 Feb 2021 17:48:15 +0800</pubDate>
+      
+      <guid>http://blog.chenhq.ren/2021/02/%E4%BB%80%E4%B9%88%E6%98%AF%E5%89%8D%E7%BC%80%E5%92%8C%E6%95%B0%E7%BB%84%EF%BC%88Prefix%20Sum%20Array%EF%BC%89/</guid>
+      <description>遇到的问题 如果有数组arr 0 1 2 3 4 5 6 arr -&amp;gt; 2 5 4 9 7 1 0 我们需要频繁的求任意子数组的元素的和，应该如何求解？最容易想到的就是循环求和，但这是个O(N)的操作。有没有什么办法可以让我们可以用O(1)的时间复杂度来得到子数组的和？ 什么是前缀和数组 如果对于数组arr，我们有如下的数组</description>
+    </item>
+    
     <item>
       <title>什么是差分数组（difference Array）</title>
       <link>http://blog.chenhq.ren/2021/02/%E4%BB%80%E4%B9%88%E6%98%AF%E5%B7%AE%E5%88%86%E6%95%B0%E7%BB%84%EF%BC%88difference%20Array%EF%BC%89/</link>
