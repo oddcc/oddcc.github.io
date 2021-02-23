@@ -197,7 +197,14 @@
 <p>例如<a href="https://leetcode-cn.com/problems/daily-temperatures/">739. Daily Temperatures</a></p>
 <p>题目要求就是高效的寻找第一个大于<code>temperatures[i]</code>的元素位置，用单调栈来解就很合适</p>
 <p>又比如<a href="https://leetcode-cn.com/problems/largest-rectangle-in-histogram/">84. Largest Rectangle in Histogram</a></p>
-<p>![img](../../static/images/什么是单调队列（Monotonic Queue）/histogram_area.png)</p>
+<p>
+
+
+
+
+
+<img class="img-fluid" src="/images/%e4%bb%80%e4%b9%88%e6%98%af%e5%8d%95%e8%b0%83%e9%98%9f%e5%88%97%ef%bc%88Monotonic%20Queue%ef%bc%89/histogram_area.png" alt='img' />
+</p>
 <p>要确定矩形的宽和高，问题可以转化为找<code>height[i]</code>左边小于它的值和找<code>height[i]</code>右边小于它的值，如果找到了，那么高为<code>height[i]</code>的矩形的宽度就能确定了，也适合用单调栈来解</p>
 
         </div>
