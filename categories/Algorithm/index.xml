@@ -6,7 +6,16 @@
     <description>Recent content in Algorithm on CodeTalk</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 22 Feb 2021 17:48:15 +0800</lastBuildDate><atom:link href="http://blog.chenhq.ren/categories/Algorithm/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 23 Feb 2021 11:02:48 +0800</lastBuildDate><atom:link href="http://blog.chenhq.ren/categories/Algorithm/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>什么是单调队列（Monotonic Queue）</title>
+      <link>http://blog.chenhq.ren/2021/02/%E4%BB%80%E4%B9%88%E6%98%AF%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97%EF%BC%88Monotonic%20Queue%EF%BC%89/</link>
+      <pubDate>Tue, 23 Feb 2021 11:02:48 +0800</pubDate>
+      
+      <guid>http://blog.chenhq.ren/2021/02/%E4%BB%80%E4%B9%88%E6%98%AF%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97%EF%BC%88Monotonic%20Queue%EF%BC%89/</guid>
+      <description>什么是单调队列（单调栈） 简单的说，就是栈内的元素，满足某种单调性，比如栈内的元素是单调递增的，那么pop()的时候，得到的就一定是当前栈内最大的元素。 单调栈可以用O(1)的复杂度获得当前栈内元素的最大（最小）值。在有新元素入栈时，破坏了单调性的元素会被出栈，且不会再次入栈。 比如我</description>
+    </item>
+    
     <item>
       <title>什么是前缀和数组（Prefix Sum Array）</title>
       <link>http://blog.chenhq.ren/2021/02/%E4%BB%80%E4%B9%88%E6%98%AF%E5%89%8D%E7%BC%80%E5%92%8C%E6%95%B0%E7%BB%84%EF%BC%88Prefix%20Sum%20Array%EF%BC%89/</link>
