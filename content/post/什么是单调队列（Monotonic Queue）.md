@@ -30,6 +30,6 @@ categories:
 
 又比如[84. Largest Rectangle in Histogram](https://leetcode-cn.com/problems/largest-rectangle-in-histogram/)
 
-![img](../../static/images/什么是单调队列（Monotonic Queue）/histogram_area.png)
+![img](../../static/images/什么是单调队列（Monotonic%20Queue）/histogram_area.png)
 
 要确定矩形的宽和高，问题可以转化为找`height[i]`左边小于它的值和找`height[i]`右边小于它的值，如果找到了，那么高为`height[i]`的矩形的宽度就能确定了，也适合用单调栈来解
