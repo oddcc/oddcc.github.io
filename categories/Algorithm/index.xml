@@ -6,7 +6,16 @@
     <description>Recent content in Algorithm on CodeTalk</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 23 Feb 2021 11:02:48 +0800</lastBuildDate><atom:link href="http://blog.chenhq.ren/categories/Algorithm/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 24 Feb 2021 11:02:13 +0800</lastBuildDate><atom:link href="http://blog.chenhq.ren/categories/Algorithm/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>什么是字典树（Trie）</title>
+      <link>http://blog.chenhq.ren/2021/02/%E4%BB%80%E4%B9%88%E6%98%AF%E5%AD%97%E5%85%B8%E6%A0%91%EF%BC%88Trie%EF%BC%89/</link>
+      <pubDate>Wed, 24 Feb 2021 11:02:13 +0800</pubDate>
+      
+      <guid>http://blog.chenhq.ren/2021/02/%E4%BB%80%E4%B9%88%E6%98%AF%E5%AD%97%E5%85%B8%E6%A0%91%EF%BC%88Trie%EF%BC%89/</guid>
+      <description>解决什么问题 我们有如下需求，给出4*4的字母表，我们可以通过把相邻（横向、竖向、斜向都算相邻）的字母连接起来组成一个单词，要找到所有单词。像下图画的WAIT就算是一个单词。假设我们已经有所有单词的词库。 容易想到的方法是我们可以从左上角[0,0]开始，用DFS的方法进行搜索；之后再</description>
+    </item>
+    
     <item>
       <title>什么是单调队列（Monotonic Queue）</title>
       <link>http://blog.chenhq.ren/2021/02/%E4%BB%80%E4%B9%88%E6%98%AF%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97%EF%BC%88Monotonic%20Queue%EF%BC%89/</link>
