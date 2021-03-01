@@ -6,13 +6,22 @@
     <description>Recent content in Categories on CodeTalk</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 24 Feb 2021 11:02:13 +0800</lastBuildDate><atom:link href="http://blog.chenhq.ren/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 01 Mar 2021 10:20:09 +0800</lastBuildDate><atom:link href="http://blog.chenhq.ren/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Algorithm</title>
       <link>http://blog.chenhq.ren/categories/Algorithm/</link>
-      <pubDate>Wed, 24 Feb 2021 11:02:13 +0800</pubDate>
+      <pubDate>Mon, 01 Mar 2021 10:20:09 +0800</pubDate>
       
       <guid>http://blog.chenhq.ren/categories/Algorithm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Redis</title>
+      <link>http://blog.chenhq.ren/categories/Redis/</link>
+      <pubDate>Mon, 01 Mar 2021 10:20:09 +0800</pubDate>
+      
+      <guid>http://blog.chenhq.ren/categories/Redis/</guid>
       <description></description>
     </item>
     

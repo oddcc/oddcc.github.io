@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Redis on CodeTalk</title>
+    <link>http://blog.chenhq.ren/categories/Redis/</link>
+    <description>Recent content in Redis on CodeTalk</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 01 Mar 2021 10:20:09 +0800</lastBuildDate><atom:link href="http://blog.chenhq.ren/categories/Redis/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>关于LRU（Latest Recently Used）算法</title>
+      <link>http://blog.chenhq.ren/2021/03/%E5%85%B3%E4%BA%8ELRU%EF%BC%88Latest%20Recently%20Used%EF%BC%89%E7%AE%97%E6%B3%95/</link>
+      <pubDate>Mon, 01 Mar 2021 10:20:09 +0800</pubDate>
+      
+      <guid>http://blog.chenhq.ren/2021/03/%E5%85%B3%E4%BA%8ELRU%EF%BC%88Latest%20Recently%20Used%EF%BC%89%E7%AE%97%E6%B3%95/</guid>
+      <description>解决什么问题 想象我们有一个缓存系统，里面以key-value的形式存储了很多缓存数据，但存储空间总是有限的，如果我们不断的接受请求，那么总有存满的一天。当存储空间存满了之后，我们就要通过某种方式去释放空间，不然我们的缓存系统就无法接受新的请求了。 那么作为一个缓存系统，我们其实希望</description>
+    </item>
+    
+  </channel>
+</rss>

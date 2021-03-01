@@ -7,21 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 
-    <title>AWS | CodeTalk</title>
-    <meta property="og:title" content="AWS - CodeTalk">
+    <title>Redis | CodeTalk</title>
+    <meta property="og:title" content="Redis - CodeTalk">
     <meta property="og:type" content="article">
         
         
     <meta name="Keywords" content="golang,go语言,oddcc,java,博客">
-    <meta name="description" content="AWS">
+    <meta name="description" content="Redis">
         
     <meta name="author" content="oddcc">
-    <meta property="og:url" content="http://blog.chenhq.ren/categories/AWS/">
+    <meta property="og:url" content="http://blog.chenhq.ren/categories/Redis/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml+xml" href="http://blog.chenhq.ren/categories/AWS/index.xml" title="CodeTalk" />
+    <link rel="alternate" type="application/rss+xml+xml" href="http://blog.chenhq.ren/categories/Redis/index.xml" title="CodeTalk" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -69,7 +69,7 @@
     
     <h3 class="archive-title">
         分类
-        <span class="keyword">AWS</span>
+        <span class="keyword">Redis</span>
         中的文章
     </h3>
     
@@ -78,29 +78,25 @@
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="http://blog.chenhq.ren/2020/11/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%A2%AB%E8%BF%AB%E5%8F%82%E5%8A%A0%E5%BC%80%E6%BA%90%E7%9A%84%E7%BB%8F%E5%8E%86/">记一次被迫参加开源的经历</a>
+                <a href="http://blog.chenhq.ren/2021/03/%E5%85%B3%E4%BA%8ELRU%EF%BC%88Latest%20Recently%20Used%EF%BC%89%E7%AE%97%E6%B3%95/">关于LRU（Latest Recently Used）算法</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2020年11月25日
+            2021年3月1日
         </date>
         
         <div class="post-meta meta-category">
             |
             
-            <a href='/categories/AWS'>AWS</a>
+            <a href='/categories/Algorithm'>Algorithm</a>
             
-            <a href='/categories/Golang'>Golang</a>
+            <a href='/categories/Redis'>Redis</a>
             
         </div>
         
         <div class="post-content">
-            <p>公司的CI目前是在固定的几台机器上跑，有几个问题，一个是没有伸缩性，高峰期时甚至有CI等到过期了都没排到机器；另一个是空闲时又要浪费不小的运营成本，毕竟机器开在那里就扣费的。</p>
-<p>出于节省公司运营成本的考虑，决定把跑CI的机器由固定配置改成可伸缩的，由于代码管理是在自建的gitlab上面，云服务使用的是AWS，所以调研了几个方案</p>
-<ol>
-<li>利用AWS Fargate实现（<a href="https://docs.gitlab.com/runner/configuration/runner_autoscale_aws/">官方文档</a>），但Fargate有自己的限制，即不支持Docker-in-Docker，所以只能跑一些简单的CI。我们的发版操作也是用CI跑的，所以官方的方式不行。</li>
-</ol>……
-            <p class="readmore"><a href="http://blog.chenhq.ren/2020/11/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%A2%AB%E8%BF%AB%E5%8F%82%E5%8A%A0%E5%BC%80%E6%BA%90%E7%9A%84%E7%BB%8F%E5%8E%86/">阅读全文</a></p>
+            解决什么问题 想象我们有一个缓存系统，里面以key-value的形式存储了很多缓存数据，但存储空间总是有限的，如果我们不断的接受请求，那么总有存满的一天。当存储空间存满了之后，我们就要通过某种方式去释放空间，不然我们的缓存系统就无法接受新的请求了。 那么作为一个缓存系统，我们其实希望……
+            <p class="readmore"><a href="http://blog.chenhq.ren/2021/03/%E5%85%B3%E4%BA%8ELRU%EF%BC%88Latest%20Recently%20Used%EF%BC%89%E7%AE%97%E6%B3%95/">阅读全文</a></p>
         </div>
     </article>
     
