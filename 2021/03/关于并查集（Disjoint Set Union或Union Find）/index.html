@@ -7,20 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 
-    <title>什么是字典树（Trie） | CodeTalk</title>
-    <meta property="og:title" content="什么是字典树（Trie） - CodeTalk">
+    <title>关于并查集（Disjoint Set Union或Union Find） | CodeTalk</title>
+    <meta property="og:title" content="关于并查集（Disjoint Set Union或Union Find） - CodeTalk">
     <meta property="og:type" content="article">
         
-    <meta property="article:published_time" content='2021-02-24T11:02:13&#43;08:00'>
+    <meta property="article:published_time" content='2021-03-02T15:40:14&#43;08:00'>
         
         
-    <meta property="article:modified_time" content='2021-02-24T11:02:13&#43;08:00'>
+    <meta property="article:modified_time" content='2021-03-02T15:40:14&#43;08:00'>
         
     <meta name="Keywords" content="golang,go语言,oddcc,java,博客">
-    <meta name="description" content="什么是字典树（Trie）">
+    <meta name="description" content="关于并查集（Disjoint Set Union或Union Find）">
         <meta name="author" content="oddcc">
         
-    <meta property="og:url" content="http://blog.chenhq.ren/2021/02/%E4%BB%80%E4%B9%88%E6%98%AF%E5%AD%97%E5%85%B8%E6%A0%91%EF%BC%88Trie%EF%BC%89/">
+    <meta property="og:url" content="http://blog.chenhq.ren/2021/03/%E5%85%B3%E4%BA%8E%E5%B9%B6%E6%9F%A5%E9%9B%86%EF%BC%88Disjoint%20Set%20Union%E6%88%96Union%20Find%EF%BC%89/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
@@ -135,9 +135,9 @@
     <div class="post-toc-content">
         <nav id="TableOfContents">
   <ul>
+    <li><a href="#什么是并查集">什么是并查集</a></li>
     <li><a href="#解决什么问题">解决什么问题</a></li>
-    <li><a href="#什么是字典树trie">什么是字典树（Trie）</a></li>
-    <li><a href="#对比其他数据结构">对比其他数据结构</a></li>
+    <li><a href="#并查集的实现">并查集的实现</a></li>
   </ul>
 </nav>
     </div>
@@ -171,10 +171,10 @@
 </script>
     <article class="post">
         <header>
-            <h1 class="post-title">什么是字典树（Trie）</h1>
+            <h1 class="post-title">关于并查集（Disjoint Set Union或Union Find）</h1>
         </header>
         <date class="post-meta meta-date">
-            2021年2月24日
+            2021年3月2日
         </date>
         
         <div class="post-meta">
@@ -187,61 +187,111 @@
         
         
         <div class="post-content">
-            <h2 id="解决什么问题">解决什么问题</h2>
-<p>我们有如下需求，给出<code>4*4</code>的字母表，我们可以通过把相邻（横向、竖向、斜向都算相邻）的字母连接起来组成一个单词，要找到所有单词。像下图画的<code>WAIT</code>就算是一个单词。假设我们已经有所有单词的词库。</p>
-<p>容易想到的方法是我们可以从左上角<code>[0,0]</code>开始，用<code>DFS</code>的方法进行搜索；之后再从<code>[0,1]</code>开始，以此类推。因为<code>DFS</code>过程中，每新增一个字母，我们都要去跟词库做一次比较，所以词库如何实现对程序的运行效率有很大的影响。</p>
-<p>
-
-
-
-
-
-<img class="img-fluid" src="/images/%e4%bb%80%e4%b9%88%e6%98%af%e5%ad%97%e5%85%b8%e6%a0%91%ef%bc%88Trie%ef%bc%89/toptal-blog-2_E.png" alt='simple word puzzle' />
-</p>
-<p>需要一个快速查找有没有某元素的数据结构，我们容易想到哈希表，但是在这个需求里，哈希表不能满足需求。就像上面<code>WAIT</code>的例子，搜索的时候应该是<code>W -&gt; WA -&gt; WAI -&gt; WAIT</code>这样，如果词库使用哈希表实现，只能告诉我们<code>WAIT</code>存在，我们的程序依然要处理<strong>所有的序列</strong>，因为词库不能告诉我们<code>W</code>开头有没有单词，甚至<code>WAIT</code>之后还有没有单词。所以在找到<code>WAIT</code>之后，搜索也不能停下来，否则就可能漏掉正确答案。</p>
-<p>如果词库在搜W的时候告诉我们没有搜下去的必要了，那么我们就可以放弃继续搜索，转而搜索其他序列，大大提高效率。</p>
-<p>所以我们需要的词库应该满足下面的需求</p>
-<ol>
-<li>快速查询一个字符序列是不是一个单词</li>
-<li>快速查询还有没有其他以此字符序列开头的更长的单词了</li>
-<li>为节省空间，希望每个单词只存储一份</li>
-</ol>
-<p>写成程序，我们的词库接口应该是这个样子</p>
+            <h2 id="什么是并查集">什么是并查集</h2>
+<p>并查集说的是这样一种数据结构，对外提供三个（一个属于可选）接口</p>
+<ul>
+<li>
+<p><code>add(x): void</code> （可选）表示添加一个元素<code>x</code>，这个元素<code>x</code>属于自己一个单独的子集</p>
+</li>
+<li>
+<p><code>find(x): element</code> 表示在整个数据结构中找一个元素<code>x</code>，返回<code>x</code>所属子集的根（<code>root</code>，这里假设了子集是个树，有根节点，实际上这里也可以是子集的编号等等，总之是可以标识一个集合的信息）</p>
+</li>
+<li>
+<p><code>union(x,y): void</code> 表示把<code>x</code>和<code>y</code>各自所在的子集进行合并</p>
+</li>
+</ul>
+<p>另外还可以方便的知道，整个集合中有几个子集。</p>
+<p>这也就是<code>Disjoint Set Union</code>名称的由来，这种数据结构可以方便的处理不相交集（<code>Disjoint Set</code>，一系列没有重复元素的集合）的合并和查询的问题。</p>
+<h2 id="解决什么问题">解决什么问题</h2>
+<p>上面说的有点抽象了，下面来看具体可以解决什么问题，比如现在有<code>[1...n]</code>共<code>n</code>个点，给你一些类似<code>(1,2)</code>这样的数据，表示<code>点1</code>和<code>点2</code>是相互连接的，属于同一个子集。要查询总共有多少个子集，或者随便给个点<code>m</code>，要查<code>m</code>属于哪一个子集。</p>
+<p>这种问题，我们就可以考虑使用并查集来解决。</p>
+<p>比如上面的例子，我们遍历所有的数据，先使用<code>add(x)</code>把所有的点建立一个集合，再遍历所有条件，使用<code>union(1,2)</code>来把<code>点1</code>和<code>点2</code>连接起来，最后只要调用<code>find(x)</code>就可以方便的得到结果。</p>
+<h2 id="并查集的实现">并查集的实现</h2>
+<p>这里给出一个参考实现，使用一个数组来表示并查集</p>
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#000;font-weight:bold">public</span> <span style="color:#000;font-weight:bold">interface</span> <span style="color:#458;font-weight:bold">Vocabulary</span> <span style="color:#000;font-weight:bold">{</span>
-    <span style="color:#458;font-weight:bold">boolean</span> <span style="color:#900;font-weight:bold">add</span><span style="color:#000;font-weight:bold">(</span>String word<span style="color:#000;font-weight:bold">);</span>
-    <span style="color:#458;font-weight:bold">boolean</span> <span style="color:#900;font-weight:bold">isPrefix</span><span style="color:#000;font-weight:bold">(</span>String prefix<span style="color:#000;font-weight:bold">);</span>
-    <span style="color:#458;font-weight:bold">boolean</span> <span style="color:#900;font-weight:bold">contains</span><span style="color:#000;font-weight:bold">(</span>String word<span style="color:#000;font-weight:bold">);</span>
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#000;font-weight:bold">private</span> <span style="color:#000;font-weight:bold">class</span> <span style="color:#458;font-weight:bold">UnionFind</span> <span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#000;font-weight:bold">private</span> <span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">[]</span> parent<span style="color:#000;font-weight:bold">;</span> <span style="color:#998;font-style:italic">// 记录了属于哪个集合，如果有parent[i] == i，那么i就是一个子集的根
+</span><span style="color:#998;font-style:italic"></span>    <span style="color:#000;font-weight:bold">private</span> <span style="color:#458;font-weight:bold">int</span> count<span style="color:#000;font-weight:bold">;</span> <span style="color:#998;font-style:italic">// 记录了包含子集数量
+</span><span style="color:#998;font-style:italic"></span>
+    <span style="color:#998;font-style:italic">// 没实现添加操作，而是在构造方法中直接生成集合
+</span><span style="color:#998;font-style:italic"></span>    <span style="color:#000;font-weight:bold">public</span> <span style="color:#900;font-weight:bold">UnionFind</span><span style="color:#000;font-weight:bold">(</span><span style="color:#458;font-weight:bold">int</span> count<span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+        <span style="color:#000;font-weight:bold">this</span><span style="color:#000;font-weight:bold">.</span><span style="color:#008080">count</span> <span style="color:#000;font-weight:bold">=</span> count<span style="color:#000;font-weight:bold">;</span>
+        <span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">[]</span> parent <span style="color:#000;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">new</span> <span style="color:#458;font-weight:bold">int</span><span style="color:#000;font-weight:bold">[</span>count<span style="color:#000;font-weight:bold">];</span>
+        <span style="color:#000;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#458;font-weight:bold">int</span> i <span style="color:#000;font-weight:bold">=</span> 0<span style="color:#000;font-weight:bold">;</span> i <span style="color:#000;font-weight:bold">&lt;</span> count<span style="color:#000;font-weight:bold">;</span> i<span style="color:#000;font-weight:bold">++)</span> parent<span style="color:#000;font-weight:bold">[</span>i<span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">=</span> i<span style="color:#000;font-weight:bold">;</span>
+        <span style="color:#000;font-weight:bold">this</span><span style="color:#000;font-weight:bold">.</span><span style="color:#008080">parent</span> <span style="color:#000;font-weight:bold">=</span> parent<span style="color:#000;font-weight:bold">;</span>
+    <span style="color:#000;font-weight:bold">}</span>
+
+    <span style="color:#000;font-weight:bold">public</span> <span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">getCount</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#000;font-weight:bold">{</span>
+        <span style="color:#000;font-weight:bold">return</span> count<span style="color:#000;font-weight:bold">;</span>
+    <span style="color:#000;font-weight:bold">}</span>
+
+    <span style="color:#000;font-weight:bold">public</span> <span style="color:#458;font-weight:bold">int</span> <span style="color:#900;font-weight:bold">find</span><span style="color:#000;font-weight:bold">(</span><span style="color:#458;font-weight:bold">int</span> x<span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+        <span style="color:#000;font-weight:bold">while</span> <span style="color:#000;font-weight:bold">(</span>x <span style="color:#000;font-weight:bold">!=</span> parent<span style="color:#000;font-weight:bold">[</span>x<span style="color:#000;font-weight:bold">])</span> <span style="color:#000;font-weight:bold">{</span>
+            parent<span style="color:#000;font-weight:bold">[</span>x<span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">=</span> parent<span style="color:#000;font-weight:bold">[</span>parent<span style="color:#000;font-weight:bold">[</span>x<span style="color:#000;font-weight:bold">]];</span> <span style="color:#998;font-style:italic">// 路径压缩（path compression），后面细说
+</span><span style="color:#998;font-style:italic"></span>            x <span style="color:#000;font-weight:bold">=</span> parent<span style="color:#000;font-weight:bold">[</span>x<span style="color:#000;font-weight:bold">];</span>
+        <span style="color:#000;font-weight:bold">}</span>
+        <span style="color:#000;font-weight:bold">return</span> x<span style="color:#000;font-weight:bold">;</span>
+    <span style="color:#000;font-weight:bold">}</span>
+
+    <span style="color:#000;font-weight:bold">public</span> <span style="color:#458;font-weight:bold">void</span> <span style="color:#900;font-weight:bold">union</span><span style="color:#000;font-weight:bold">(</span><span style="color:#458;font-weight:bold">int</span> x<span style="color:#000;font-weight:bold">,</span> <span style="color:#458;font-weight:bold">int</span> y<span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+        <span style="color:#458;font-weight:bold">int</span> rootX <span style="color:#000;font-weight:bold">=</span> find<span style="color:#000;font-weight:bold">(</span>x<span style="color:#000;font-weight:bold">);</span>
+        <span style="color:#458;font-weight:bold">int</span> rootY <span style="color:#000;font-weight:bold">=</span> find<span style="color:#000;font-weight:bold">(</span>y<span style="color:#000;font-weight:bold">);</span>
+        <span style="color:#000;font-weight:bold">if</span> <span style="color:#000;font-weight:bold">(</span>rootX <span style="color:#000;font-weight:bold">==</span> rootY<span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">return</span><span style="color:#000;font-weight:bold">;</span>
+        <span style="color:#000;font-weight:bold">if</span> <span style="color:#000;font-weight:bold">(</span>rootX <span style="color:#000;font-weight:bold">&gt;</span> rootY<span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+            parent<span style="color:#000;font-weight:bold">[</span>rootX<span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">=</span> rootY<span style="color:#000;font-weight:bold">;</span>
+        <span style="color:#000;font-weight:bold">}</span>
+        <span style="color:#000;font-weight:bold">else</span> <span style="color:#000;font-weight:bold">{</span>
+            parent<span style="color:#000;font-weight:bold">[</span>rootY<span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">=</span> rootX<span style="color:#000;font-weight:bold">;</span>
+        <span style="color:#000;font-weight:bold">}</span>
+        <span style="color:#998;font-style:italic">// 合并后子集数量要减1
+</span><span style="color:#998;font-style:italic"></span>        count<span style="color:#000;font-weight:bold">--;</span>
+    <span style="color:#000;font-weight:bold">}</span>
 <span style="color:#000;font-weight:bold">}</span>
 </code></pre></td></tr></table>
 </div>
-</div><h2 id="什么是字典树trie">什么是字典树（Trie）</h2>
-<p>字典树就是一种可以满足以上需求的数据结构。顾名思义，字典树是多叉树，每个节点存储了下一个字符的集合，以及此结点是不是一个单词的结尾</p>
-<p>
-
-
-
-
-
-<img class="img-fluid" src="/images/%e4%bb%80%e4%b9%88%e6%98%af%e5%ad%97%e5%85%b8%e6%a0%91%ef%bc%88Trie%ef%bc%89/image-20210224104601046.png" alt='image-20210224104601046' />
-</p>
-<p>其中上图中，蓝色的结点就是单词的结尾。</p>
-<p>如果我们查到这个节点，发现它是单词的结尾，就说明目前的字符序列对应了一个单词；如果此结点还有子结点，说明存在以此字符序列开头的更长的单词，可以继续往下搜索。</p>
-<p>添加单词时也一样，查询时碰到不存在的结点就添加，在达到末尾时标记结点为单词的结尾。</p>
-<p>比较完整的实现可以参考<a href="https://algs4.cs.princeton.edu/code/edu/princeton/cs/algs4/TrieSET.java.html">这里</a></p>
-<h2 id="对比其他数据结构">对比其他数据结构</h2>
-<p>要实现上面的需求，并不一定只能用字典树，但是字典树是其中最好的一种方案。</p>
-<p>比如我们要实现<code>contains(String word)</code>方法，就要求快速确定某元素是否存在；实现<code>isPrefix(String prefix)</code>其实是快速找到下一个比<code>prefix</code>元素“大”的元素，所以需要一个“有序”的数据结构。</p>
-<p>比如我们可以用<code>ArrayList</code>实现，<code>contains(String word)</code>和<code>isPrefix(String prefix)</code>可以通过二分查找来做，<code>add(String word)</code>之后要对列表再进行排序，保持整体有序。其中两个搜索操作都是*O(log(n))*的复杂度。</p>
-<p>再比如我们可以用二叉树来实现。搜索也是*O(log(n))*的复杂度。</p>
+</div><p>以上是个简单的并查集实现，代码逻辑不难，重点说说路径压缩（path compression）。因为我们在<code>int[] parent</code>中记录的是父节点的信息，所以实际上查询的时候，实际上是从树的叶子节点往根节点查，类似于在遍历一个链表，当树的高度很大，或链表很长时，查询效率是很低的（<code>O(n)</code>）。</p>
+<p>一个简单的办法就是，如果发现我的父节点不是根节点，那么就让父节点的父节点直接变成我的父节点，这样一来，层级就少了一层。最后的结果就是，除了根节点之外，一个子集中的所有节点都直接连接到根节点上，查询变成了<code>O(1)</code>的复杂度。这是并查集能高效进行查询的关键。</p>
 
         </div>
 
@@ -249,7 +299,7 @@
 <div class="post-archive">
     <ul class="post-copyright">
         <li><strong>原文作者：</strong><a rel="author" href="http://blog.chenhq.ren/">oddcc</a></li>
-        <li style="word-break:break-all"><strong>原文链接：</strong><a href="http://blog.chenhq.ren/2021/02/%E4%BB%80%E4%B9%88%E6%98%AF%E5%AD%97%E5%85%B8%E6%A0%91%EF%BC%88Trie%EF%BC%89/">http://blog.chenhq.ren/2021/02/%E4%BB%80%E4%B9%88%E6%98%AF%E5%AD%97%E5%85%B8%E6%A0%91%EF%BC%88Trie%EF%BC%89/</a></li>
+        <li style="word-break:break-all"><strong>原文链接：</strong><a href="http://blog.chenhq.ren/2021/03/%E5%85%B3%E4%BA%8E%E5%B9%B6%E6%9F%A5%E9%9B%86%EF%BC%88Disjoint%20Set%20Union%E6%88%96Union%20Find%EF%BC%89/">http://blog.chenhq.ren/2021/03/%E5%85%B3%E4%BA%8E%E5%B9%B6%E6%9F%A5%E9%9B%86%EF%BC%88Disjoint%20Set%20Union%E6%88%96Union%20Find%EF%BC%89/</a></li>
         <li><strong>版权声明：</strong>本作品采用<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可，非商业转载请注明出处（作者，原文链接），商业转载请联系作者获得授权。</li>
     </ul>
 </div>
@@ -263,15 +313,15 @@
     <h2>See Also</h2>
     <ul class="listing">
         
+        <li><a href="/2021/03/%E5%85%B3%E4%BA%8ELRU%EF%BC%88Latest%20Recently%20Used%EF%BC%89%E7%AE%97%E6%B3%95/">关于LRU（Latest Recently Used）算法</a></li>
+        
+        <li><a href="/2021/02/%E4%BB%80%E4%B9%88%E6%98%AF%E5%AD%97%E5%85%B8%E6%A0%91%EF%BC%88Trie%EF%BC%89/">什么是字典树（Trie）</a></li>
+        
         <li><a href="/2021/02/%E4%BB%80%E4%B9%88%E6%98%AF%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97%EF%BC%88Monotonic%20Queue%EF%BC%89/">什么是单调队列（Monotonic Queue）</a></li>
         
         <li><a href="/2021/02/%E4%BB%80%E4%B9%88%E6%98%AF%E5%89%8D%E7%BC%80%E5%92%8C%E6%95%B0%E7%BB%84%EF%BC%88Prefix%20Sum%20Array%EF%BC%89/">什么是前缀和数组（Prefix Sum Array）</a></li>
         
         <li><a href="/2021/02/%E4%BB%80%E4%B9%88%E6%98%AF%E5%B7%AE%E5%88%86%E6%95%B0%E7%BB%84%EF%BC%88difference%20Array%EF%BC%89/">什么是差分数组（difference Array）</a></li>
-        
-        <li><a href="/2021/01/WH-1000XM3%E9%80%9A%E8%BF%87NFC%E8%BF%9E%E6%8E%A5%E5%88%B0iPhone/">WH-1000XM3通过NFC连接到iPhone</a></li>
-        
-        <li><a href="/2020/12/gilab-runner%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89/">gilab-runner源码阅读记录（一）</a></li>
         
     </ul>
 </div>

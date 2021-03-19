@@ -71,6 +71,31 @@
     <article class="post">
         <header>
             <h1 class="post-title">
+                <a href="http://blog.chenhq.ren/2021/03/%E5%85%B3%E4%BA%8E%E5%B9%B6%E6%9F%A5%E9%9B%86%EF%BC%88Disjoint%20Set%20Union%E6%88%96Union%20Find%EF%BC%89/" title="关于并查集（Disjoint Set Union或Union Find）">关于并查集（Disjoint Set Union或Union Find）</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2021年3月2日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/Algorithm'>Algorithm</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            什么是并查集 并查集说的是这样一种数据结构，对外提供三个（一个属于可选）接口 add(x): void （可选）表示添加一个元素x，这个元素x属于自己一个单独的子集 find(x): element 表示在整个数据结构中找一个元素x，返回x所属子集的根（root，这里假设了子集是个树，有根节点，实际上这里也可以是子集的编号等等，总之是可……
+        </div>
+        <p class="readmore"><a href="http://blog.chenhq.ren/2021/03/%E5%85%B3%E4%BA%8E%E5%B9%B6%E6%9F%A5%E9%9B%86%EF%BC%88Disjoint%20Set%20Union%E6%88%96Union%20Find%EF%BC%89/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
                 <a href="http://blog.chenhq.ren/2021/03/%E5%85%B3%E4%BA%8ELRU%EF%BC%88Latest%20Recently%20Used%EF%BC%89%E7%AE%97%E6%B3%95/" title="关于LRU（Latest Recently Used）算法">关于LRU（Latest Recently Used）算法</a>
             </h1>
         </header>
@@ -303,37 +328,6 @@
     
     
     
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="http://blog.chenhq.ren/2020/11/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%A2%AB%E8%BF%AB%E5%8F%82%E5%8A%A0%E5%BC%80%E6%BA%90%E7%9A%84%E7%BB%8F%E5%8E%86/" title="记一次被迫参加开源的经历">记一次被迫参加开源的经历</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2020年11月25日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/AWS'>AWS</a></span>
-            
-            <span class="meta-category"><a href='/categories/Golang'>Golang</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <p>公司的CI目前是在固定的几台机器上跑，有几个问题，一个是没有伸缩性，高峰期时甚至有CI等到过期了都没排到机器；另一个是空闲时又要浪费不小的运营成本，毕竟机器开在那里就扣费的。</p>
-<p>出于节省公司运营成本的考虑，决定把跑CI的机器由固定配置改成可伸缩的，由于代码管理是在自建的gitlab上面，云服务使用的是AWS，所以调研了几个方案</p>
-<ol>
-<li>利用AWS Fargate实现（<a href="https://docs.gitlab.com/runner/configuration/runner_autoscale_aws/">官方文档</a>），但Fargate有自己的限制，即不支持Docker-in-Docker，所以只能跑一些简单的CI。我们的发版操作也是用CI跑的，所以官方的方式不行。</li>
-</ol>……
-        </div>
-        <p class="readmore"><a href="http://blog.chenhq.ren/2020/11/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%A2%AB%E8%BF%AB%E5%8F%82%E5%8A%A0%E5%BC%80%E6%BA%90%E7%9A%84%E7%BB%8F%E5%8E%86/">阅读全文</a></p>
-    </article>
-    
-    
-    
 
 
 
@@ -418,6 +412,10 @@ if (!doNotTrack) {
 <ul class="widget-list">
     
     <li>
+        <a href="http://blog.chenhq.ren/2021/03/%E5%85%B3%E4%BA%8E%E5%B9%B6%E6%9F%A5%E9%9B%86%EF%BC%88Disjoint%20Set%20Union%E6%88%96Union%20Find%EF%BC%89/" title="关于并查集（Disjoint Set Union或Union Find）">关于并查集（Disjoint Set Union或Union Find）</a>
+    </li>
+    
+    <li>
         <a href="http://blog.chenhq.ren/2021/03/%E5%85%B3%E4%BA%8ELRU%EF%BC%88Latest%20Recently%20Used%EF%BC%89%E7%AE%97%E6%B3%95/" title="关于LRU（Latest Recently Used）算法">关于LRU（Latest Recently Used）算法</a>
     </li>
     
@@ -453,10 +451,6 @@ if (!doNotTrack) {
         <a href="http://blog.chenhq.ren/2020/11/%E6%8E%A5%E8%A7%A6%E4%BA%86%E4%B8%80%E4%BA%9B%E6%96%B0%E8%AF%AD%E8%A8%80%E5%90%8E%EF%BC%8C%E5%9B%9E%E5%A4%B4%E7%9C%8Bjava-8%E4%B9%8B%E5%90%8E%E7%9A%84%E6%9B%B4%E6%96%B0/" title="接触了一些新语言后，回头看Java 8之后的更新">接触了一些新语言后，回头看Java 8之后的更新</a>
     </li>
     
-    <li>
-        <a href="http://blog.chenhq.ren/2020/11/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%A2%AB%E8%BF%AB%E5%8F%82%E5%8A%A0%E5%BC%80%E6%BA%90%E7%9A%84%E7%BB%8F%E5%8E%86/" title="记一次被迫参加开源的经历">记一次被迫参加开源的经历</a>
-    </li>
-    
 </ul>
     </section>
 
@@ -468,7 +462,7 @@ if (!doNotTrack) {
     
     <li><a href="http://blog.chenhq.ren/categories/AWS/">AWS (1)</a></li>
     
-    <li><a href="http://blog.chenhq.ren/categories/Algorithm/">Algorithm (5)</a></li>
+    <li><a href="http://blog.chenhq.ren/categories/Algorithm/">Algorithm (6)</a></li>
     
     <li><a href="http://blog.chenhq.ren/categories/Fool-Around/">Fool Around (5)</a></li>
     
